@@ -1,5 +1,5 @@
 const ItemInterface = require("./src/repository/item_interface")
-const ItemUc =require("./usecase/item")
+const ItemUc =require("./src/usecase/item")
 
 
 class ItemRepo extends ItemInterface {

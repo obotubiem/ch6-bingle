@@ -24,3 +24,4 @@ class Item extends ItemInterface {
       }
 
 }
+module.exports = Item

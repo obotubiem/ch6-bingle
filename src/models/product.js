@@ -1,3 +1,3 @@
-const {Product} = require("../transport/postgresql/")
+const {Product} = require("../transport/postgresql/models")
 
 module.exports = Product
