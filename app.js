@@ -4,12 +4,12 @@ const path =require('path')
 
 
 app.use(express.json())
-const productRouter= require('./src/controllers/product_controller')
-app.use('/product', productRouter)
+const productRouter= require('./src/routes/product_router')
 
 app.get('/', (req, res)=>{
     res.json("test server")
 })
+app.use('/product', productRouter)
 
 
 const port =8080

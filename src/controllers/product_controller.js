@@ -4,7 +4,7 @@ const Item = require('../usecase/item');
 item = new Item(new itemRepository())
 
 
-    let getOneProduct=async (req, res, next) =>{
+  exports.getOneProduct=async (req, res) =>{
         const id = req.params.id
         item.getProductByID(id).then(result =>{
             if(!result){
@@ -13,11 +13,11 @@ item = new Item(new itemRepository())
                 res.json(res)
             }
         })
-        .catch(err = next(err))
+        .catch(err=>{
+            console.log(err)
+        })
    
    
     }
 
 
-
-module.exports =getOneProduct
