@@ -11,6 +11,7 @@ item = new Item(new itemRepository())
                 res.json('data tidak ada')
             } else {
                 res.json(res)
+                console.log(res)
             }
         })
         .catch(err=>{
