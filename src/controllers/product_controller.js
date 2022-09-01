@@ -3,8 +3,8 @@ const Item = require('../usecase/item');
 
 item = new Item(new itemRepository())
 
-class ItemController {
-    static getOneProduct(req, res, next){
+
+    let getOneProduct=async (req, res, next) =>{
         const id = req.params.id
         item.getProductByID(id).then(result =>{
             if(!result){
@@ -17,7 +17,7 @@ class ItemController {
    
    
     }
-}
 
 
-module.exports =ItemController
+
+module.exports =getOneProduct

@@ -10,3 +10,10 @@ app.use('/product', productRouter)
 app.get('/', (req, res)=>{
     res.json("test server")
 })
+
+
+const port =8080
+
+app.listen(port, ()=>{
+    console.log(`server runing on port ${port}`)
+})
