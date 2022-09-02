@@ -25,8 +25,29 @@ exports.getOneProduct = async (req, res, next)=>{
             .json(res_data.failed, 'Product not found', product)
         }
 
+<<<<<<< HEAD
         res.status(200).json(res_data.success(product))
     } catch (error) {
         next(error)
     }
 }
+=======
+  exports.getOneProduct=async (req, res) =>{
+        const id = req.params.id
+        item.getProductByID(id).then(result =>{
+            if(!result){
+                res.json('data tidak ada')
+            } else {
+                res.json(res)
+                console.log(res)
+            }
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+   
+   
+    }
+
+
+>>>>>>> 62fda099354fd67587e42371c7eb5a9cfe236c30
