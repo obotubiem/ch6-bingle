@@ -7,6 +7,7 @@ const ProductRepository = require("../repository/product")
 const ItemUseCase = require("../usecase/item")
 
 const productRouter = require("./routes/product_router")
+const adminRouter = require("./routes/admin_router")
 
 const itemUC = new ItemUseCase(new ProductRepository())
 
@@ -20,6 +21,7 @@ app.get('/', (req, res)=>{
 
 
 app.use('/product', productRouter)
+app.use('/admin', adminRouter)
 
 
 

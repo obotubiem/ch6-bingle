@@ -29,6 +29,36 @@ class ProductRepository {
 
         return await this.ProductModel.findAll()
     }
+    async createProduct(product){
+        let is_success = false
+        try {
+            product = await this.ProductModel.create(product)
+            is_success = true
+        } catch (e) {
+            console.log(e)
+            is_success =false
+        }
+        return {
+            is_success : is_success,
+            product :product
+        }
+    }
+    async updateProduct(product, id){
+        let is_success = false
+        try {
+            product = await this.ProductModel.update(product ,{
+                where : {id:id}
+            })
+            is_success = true
+        } catch (e) {
+            console.log(e)
+            is_success =false
+        }
+        return {
+            is_success : is_success,
+            product :product
+        }
+    }
 }
 
 module.exports = ProductRepository
