@@ -59,6 +59,20 @@ class ProductRepository {
             product :product
         }
     }
+    async deleteProduct(id){
+        let is_success =false
+        try {
+            product = await this.ProductModel.destroy({
+                where : {id:id}
+            })
+            is_success = true
+        } catch (e) {
+            return {
+                is_success:is_success,
+                product:product
+            }
+        }
+    }
 }
 
 module.exports = ProductRepository
