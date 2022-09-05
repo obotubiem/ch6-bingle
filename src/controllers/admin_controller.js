@@ -2,7 +2,14 @@ const res_data = require('../utils/respons_data')
 
 exports.addProduct  = async (req, res, next)=>{
     try {
-        let product = req.body
+        let product ={
+            name: req.body.name,
+            price: req.body.price,
+            stock: req.body.stock,
+            category_id: req.body.category_id,
+            photo_product: req.file.filename
+        
+        } 
         let create_res = await req.itemUC.createProduct(product)
         if(create_res.is_success !==true){
             return res

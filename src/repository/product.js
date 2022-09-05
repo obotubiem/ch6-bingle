@@ -63,8 +63,8 @@ class ProductRepository {
         let is_success =false
         try {
             product = await this.ProductModel.destroy({
-                where : {id:id}
-            })
+                where: { id: id }
+              })
             is_success = true
         } catch (e) {
             return {

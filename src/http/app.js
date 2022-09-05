@@ -2,7 +2,9 @@ const express = require('express')
 const app = express()
 
 
+app.use('/public', express.static('public'))
 app.use(express.json())
+app.use(express.urlencoded({extended:false}))
 const ProductRepository = require("../repository/product")
 const ItemUseCase = require("../usecase/item")
 
