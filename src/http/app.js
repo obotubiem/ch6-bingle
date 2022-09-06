@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const passport= require("../libs/passport")
 
 
 app.use('/public', express.static('public'))
@@ -16,6 +17,7 @@ const authRouter = require("./routes/auth_router")
 
 
 
+
 const itemUC = new ItemUseCase(new ProductRepository())
 const userUC = new UserUseCase(new UserRepository())
 
@@ -28,7 +30,7 @@ app.get('/', (req, res)=>{
     res.json("test")
 }) 
 
-
+app.use(passport.initialize())
 app.use('/product', productRouter)
 app.use('/admin', adminRouter)
 app.use('/', authRouter)

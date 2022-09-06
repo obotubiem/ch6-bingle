@@ -1,6 +1,9 @@
+require('dotenv').config();
+
+
 const bcrypt = require("bcrypt")
 const res_data = require('../utils/respons_data')
-
+const jwt = require("jsonwebtoken")
 
 module.exports = {
     login: async (req, res, next) => {
@@ -18,7 +21,17 @@ module.exports = {
                 return res
                     .json(res_data.failed('username or password incorrect', user))
             }
-            res.json(res_data.success(user))
+            const accessTeken = jwt.sign(
+                { id : user.id,
+                username: user.username },
+                process.env.JWT_KEY_SECRET,
+                {
+                  expiresIn: '6h',
+                },
+              );
+          
+             
+              res.json(res_data.success({ id: user.id, token: accessTeken }));
         } catch (error) {
             next(error)
         }
@@ -57,6 +70,8 @@ module.exports = {
                     .status(500)
                     .json(res_data.failed('somthing went wrong', user))
             }
+       
+            
             res.json(res_data.success(user))
         } catch (error) {
             next(error)
