@@ -14,7 +14,7 @@ exports.addProduct  = async (req, res, next)=>{
         if(create_res.is_success !==true){
             return res
            .status(400)
-           .json(res_data.failed, 'create data failed', product)
+           .json(res_data.failed('create data failed'), null)
         }
         res.json(res_data.success(product))
         
@@ -31,7 +31,7 @@ exports.editProduct = async (req, res, next) => {
         if(update_res.is_success !== true){
             return res
             .status(400)
-            .json(res_data.failed, 'update data failed')
+            .json(res_data.failed('update data failed'))
         }
         res.json(res_data.success(product))
 
@@ -49,7 +49,7 @@ exports.deleteProduct = async (req, res, next)=>{
         if(delete_res.is_success !== true){
             return res
             .status(400)
-            .json(res_data.failed, 'delete data failed')
+            .json(res_data.failed, ('delete data failed'))
         }
         res.json(res_data.success(delete_res))
     } catch (error) {
