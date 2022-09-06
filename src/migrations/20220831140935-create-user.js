@@ -23,6 +23,9 @@ module.exports = {
       photo_profile: {
         type: Sequelize.STRING
       },
+      is_admin: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
