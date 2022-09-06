@@ -30,7 +30,8 @@ module.exports = {
                 name: req.body.name,
                 username: req.body.username,
                 email: req.body.email,
-                photo_profile:req.file.filename
+                photo_profile:req.file.filename,
+                is_admin : false
             }
             if (req.body.password !== req.body.confrimPassword) {
                 return res

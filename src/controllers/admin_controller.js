@@ -7,7 +7,7 @@ exports.addProduct  = async (req, res, next)=>{
             price: req.body.price,
             stock: req.body.stock,
             category_id: req.body.category_id,
-            photo_product: req.file.filename
+            photo_product: req.file.filename,
         
         } 
         let create_res = await req.itemUC.createProduct(product)
