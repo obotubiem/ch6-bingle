@@ -2,8 +2,8 @@ const res_data = require('../utils/respons_data')
 
 exports.getAllProduct = async (req, res, next)=>{
    try {
-       let product = await req.itemUC.getProducts(null)
-       if(product == null){
+       let product = await req.itemUC.getProducts()
+       if(product ==null || 'undefined'){
            return res
            .status(400)
            .json(res_data.failed('Item not found', product))

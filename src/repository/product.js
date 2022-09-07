@@ -1,4 +1,4 @@
-const {Product} = require("../database/models")
+const { Product } = require("../database/models")
 
 class ProductRepository {
     constructor() {
@@ -21,56 +21,67 @@ class ProductRepository {
     }
 
     async getProducts(filters) {
-        if (filters != null) {
-            return await this.ProductModel.findAll({
-                where: filters
-            })
+        let options = {};
+        if (typeof filters !== "undefined" || filters !== null) {
+            options.where = filters;
+        }
+        let product = []
+
+        
+        try {
+            product = await this.ProductModel.findAll(options);
+        } catch (e) {
+            console.log(e);
         }
 
-        return await this.ProductModel.findAll()
+        return product;
     }
-    async createProduct(product){
+
+    async createProduct(product) {
         let is_success = false
         try {
             product = await this.ProductModel.create(product)
             is_success = true
         } catch (e) {
             console.log(e)
-            is_success =false
+            is_success = false
         }
         return {
-            is_success : is_success,
-            product :product
+            is_success: is_success,
+            product: product
         }
     }
-    async updateProduct(product, id){
+    async updateProduct(product, id) {
         let is_success = false
         try {
-            product = await this.ProductModel.update(product ,{
-                where : {id:id}
+            product = await this.ProductModel.update(product, {
+                where: { id: id }
             })
             is_success = true
         } catch (e) {
             console.log(e)
-            is_success =false
+            is_success = false
         }
         return {
-            is_success : is_success,
-            product :product
+            is_success: is_success,
+            product: product
         }
     }
-    async deleteProduct(id){
-        let is_success =false
+    async deleteProduct(id, product) {
+        let is_success = false
+
         try {
             product = await this.ProductModel.destroy({
                 where: { id: id }
-              })
+            })
             is_success = true
         } catch (e) {
-            return {
-                is_success:is_success,
-                product:product
-            }
+            console.log(e)
+        }
+        return {
+            is_success: is_success,
+            product: product
+
         }
     }
 }

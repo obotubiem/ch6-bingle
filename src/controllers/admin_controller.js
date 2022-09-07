@@ -49,9 +49,9 @@ exports.deleteProduct = async (req, res, next)=>{
         if(delete_res.is_success !== true){
             return res
             .status(400)
-            .json(res_data.failed, ('delete data failed'))
+            .json(res_data.failed ('delete data failed'))
         }
-        res.json(res_data.success(delete_res))
+        res.json(res_data.success('succes delete product'))
     } catch (error) {
         next(error)
     }

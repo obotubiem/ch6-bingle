@@ -6,7 +6,7 @@ const handleUpload =require("../libs/handle_Upload")
 
 router.post('/product/add',handleUpload.single('photo_product') ,admin.addProduct)
 router.put('/product/update/:id', admin.editProduct)
-router.delete('/product/delete/:id', admin.editProduct)
+router.delete('/product/delete/:id', admin.deleteProduct)
 
 
 
