@@ -1,4 +1,4 @@
-const{User} = require('../transport/postgresql/models')
+const{User} = require("../database/models")
 
 class UserRepository {
     constructor (){

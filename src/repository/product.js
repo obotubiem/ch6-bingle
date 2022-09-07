@@ -1,4 +1,4 @@
-const {Product} = require("../transport/postgresql/models")
+const {Product} = require("../database/models")
 
 class ProductRepository {
     constructor() {

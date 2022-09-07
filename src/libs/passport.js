@@ -3,8 +3,8 @@ require('dotenv').config();
 
 const passport = require('passport')
 const {Strategy: JwtStrategy, ExtractJwt} = require('passport-jwt')
-const {User} = require('../transport/postgresql/models');
-const user = require('../transport/postgresql/models/user');
+const {User} = require('../database/models');
+const user = require('../database/models/user');
 
 const options ={
     jwtFromRequest : ExtractJwt.fromHeader('authorization'),
