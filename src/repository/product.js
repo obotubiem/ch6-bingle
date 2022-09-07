@@ -20,21 +20,16 @@ class ProductRepository {
         return data
     }
 
-    async getProducts(filters) {
-        let options = {};
-        if (typeof filters !== "undefined" || filters !== null) {
-            options.where = filters;
-        }
-        let product = []
-
+    async getProducts() {
         
+        let data = null
         try {
-            product = await this.ProductModel.findAll(options);
-        } catch (e) {
-            console.log(e);
+            data = await this.ProductModel.findAll()
+        } catch (err) {
+            console.log(err)
+            return null
         }
-
-        return product;
+        return data
     }
 
     async createProduct(product) {
