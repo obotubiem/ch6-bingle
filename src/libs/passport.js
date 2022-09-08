@@ -13,8 +13,10 @@ passport.use(
       secretOrKey: process.env.JWT_KEY_SECRET,
     },
     (jwtPayload, done) => {
+
     return User.findByPk(jwtPayload.id)
     
+
         .then((user) => {
           return done(null, user);
         })
@@ -26,3 +28,4 @@ passport.use(
 );
 
 module.exports = passport;
+

@@ -15,11 +15,11 @@ module.exports = {
             if (user === null) {
                 return res
                     .status(400)
-                    .json(res_data.failed('username or password incorrect', user))
+                    .json(res_data.failed('username or password incorrect', null))
             }
             if (bcrypt.compareSync(password, user.password) !== true) {
                 return res
-                    .json(res_data.failed('username or password incorrect', user))
+                    .json(res_data.failed('username or password incorrect', null))
             }
             const accessTeken = jwt.sign(
                 { id : user.id,
