@@ -5,8 +5,9 @@ const product = require('../controllers/product_controller')
 
 
 router.get('/',passport.authenticate("jwt", {session: false}) ,product.getAllProduct)
-router.get('/:id', product.getOneProduct)
+
+router.get('/:id',passport.authenticate("jwt", {session: false}), product.getOneProduct)
+
 
 
 module.exports=router
-
