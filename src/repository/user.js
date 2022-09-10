@@ -17,6 +17,19 @@ class UserRepository {
         return user
     }
 
+    async getUserByEmail (email) {
+        let user = null
+        try {
+            user = await this.UserModel.findOne({
+                where : {email: email} 
+                  
+            })
+        } catch (error) {
+            console.log(error)
+        }
+        return user
+    }
+
     async getUserByID  (id){
         let user =null
         try {

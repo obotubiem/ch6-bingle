@@ -9,7 +9,7 @@ const {User} = require("../database/models");
 passport.use(
   new StrategyJwt(
     {
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJwt.fromHeader('authorization'),
       secretOrKey: process.env.JWT_KEY_SECRET,
     },
     (jwtPayload, done) => {

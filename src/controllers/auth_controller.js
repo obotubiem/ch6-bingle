@@ -22,15 +22,10 @@ module.exports = {
                     .json(res_data.failed('username or password incorrect', null))
             }
 
-            let dataUser = {
-                id : user.id,
-                name : user.name,
-                username : user.username,
-                email : user.email,
-                is_admin : user.is_admin
-            }
+       
             const accessToken = jwt.sign(
-                { result : dataUser },
+                { id : user.id,
+                username : user.username },
                 process.env.JWT_KEY_SECRET,
                 {
                   expiresIn: '6h',
@@ -38,7 +33,8 @@ module.exports = {
               );
           
              
-              res.json(res_data.success({ dataUser, token: accessToken }));
+              res.json(res_data.success({ id : user.id,
+                username : user.username, token: accessToken }));
         } catch (error) {
             next(error)
         }
@@ -56,7 +52,7 @@ module.exports = {
             if (req.body.password !== req.body.confrimPassword) {
                 return res
                     .status(400)
-                    .json(res_data.failed('password and confirmPassword incorrect', user))
+                    .json(res_data.failed('password and confirmPassword incorrect', null))
             }
             let password = bcrypt.hashSync(req.body.password, 10);
             let confrimPassword = bcrypt.hashSync(req.body.confrimPassword, 10);
@@ -64,21 +60,29 @@ module.exports = {
             user.password = password
             user.confrimPassword = confrimPassword
 
-            let user_res = await req.userUC.getUserByUsername(user.username)
-            if (user_res !== null) {
+            let user_res_username = await req.userUC.getUserByUsername(user.username)
+            if (user_res_username !== null) {
                 return res
                     .status(400)
-                    .json(res_data.failed('user already use', user))
+                    .json(res_data.failed('user already use', null))
             }
+            let user_res_email = await req.userUC.getUserByEmail(user.email)
+            if (user_res_email !== null) {
+                return res
+                    .status(400)
+                    .json(res_data.failed('user already use', null))
+            }
+     
 
             let create_res = await req.userUC.createUser(user)
             if (create_res.is_success !== true) {
                 return res
                     .status(500)
-                    .json(res_data.failed('somthing went wrong', user))
+                    .json(res_data.failed('somthing went wrong', null))
             }
        
-            
+            delete user.password
+            delete user.confrimPassword
             res.json(res_data.success(user))
         } catch (error) {
             next(error)
