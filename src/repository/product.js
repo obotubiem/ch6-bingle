@@ -62,8 +62,9 @@ class ProductRepository {
             product: product
         }
     }
-    async deleteProduct(id, product) {
+    async deleteProduct(id) {
         let is_success = false
+        let product = null
 
         try {
             product = await this.ProductModel.destroy({

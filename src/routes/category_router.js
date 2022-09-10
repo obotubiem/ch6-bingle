@@ -4,9 +4,9 @@ const router = express.Router()
 const category = require('../controllers/category_controller')
 
 
-router.get('/',passport.authenticate("jwt", {session:false}) ,category.getAllCategory)
+router.get('/',category.getAllCategory)
 
-router.get('/:id',passport.authenticate("jwt", {session: false}), category.getOneCategory)
+router.get('/:id', category.getOneCategory)
 
 
 

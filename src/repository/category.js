@@ -1,16 +1,15 @@
 const { Category } = require("../database/models")
 
 class CategoryRepository {
-    constructor() {
-        this.categoryModel = Category
+    constructor(){
+        this.CategoryModel = Category
     }
-
-    async getcategoryByID(id) {
+    async getCategoryByID(id){
         let data = null
         try {
-            data = await this.categoryModel.findOne({
-                where: {
-                    id: id
+            data = await this.CategoryModel.findOne({
+                where:{
+                    id:id
                 }
             })
         } catch (err) {
@@ -19,66 +18,61 @@ class CategoryRepository {
         }
         return data
     }
-
-    async getcategorys() {
-        
+    async getCategory(){
         let data = null
         try {
-            data = await this.categoryModel.findAll()
+            data = await this.CategoryModel.findAll()
         } catch (err) {
             console.log(err)
             return null
         }
         return data
     }
-
-    async createCategory(category) {
+    async createCategory(category){
         let is_success = false
         try {
-            category = await this.categoryModel.create(category)
+            category = await this.CategoryModel.create(category)
             is_success = true
-        } catch (e) {
-            console.log(e)
-            is_success = false
+        } catch (err) {
+            console.log(err)
         }
         return {
-            is_success: is_success,
-            category: category
+            is_success : is_success,
+            category : category
         }
     }
-    async updateCategory(category, id) {
+    async updateCategory(category, id){
         let is_success = false
         try {
-            category = await this.categoryModel.update(category, {
-                where: { id: id }
+            category = await this.CategoryModel.update(category, {
+               where : {id :id}
             })
-            is_success = true
-        } catch (e) {
-            console.log(e)
-            is_success = false
+            is_success =true
+        } catch (err) {
+            console.log(err)
         }
         return {
-            is_success: is_success,
-            category: category
+            is_success : is_success,
+            category : category
         }
     }
-    async deleteCategory(id, category) {
+    async deleteCategory(id){
         let is_success = false
-
+        let category = null
         try {
-            category = await this.categoryModel.destroy({
-                where: { id: id }
-            })
+            category = await this.CategoryModel.destroy({
+                where : {id :id}
+             })
             is_success = true
-        } catch (e) {
-            console.log(e)
+        } catch (err) {
+            console.log(err)
         }
         return {
-            is_success: is_success,
-            category: category
-
+            is_success :is_success,
+            category : category
         }
     }
+
 }
 
 module.exports = CategoryRepository

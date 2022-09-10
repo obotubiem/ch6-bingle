@@ -8,8 +8,10 @@ app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 const ProductRepository = require("./src/repository/product")
 const ItemUseCase = require("./src/usecase/item")
+
+const CategoriesRepository =require("./src/repository/category")
 const CategoryUseCase = require("./src/usecase/category")
-const CategoryRepository =require("./src/repository/category")
+
 const UserRepository =require("./src/repository/user")
 const UserUseCase = require("./src/usecase/user")
 
@@ -20,7 +22,7 @@ const authRouter = require("./src/routes/auth_router")
 
 
 
-const categoryUC = new CategoryUseCase(new CategoryRepository())
+const categoryUC = new CategoryUseCase(new CategoriesRepository())
 const itemUC = new ItemUseCase(new ProductRepository())
 const userUC = new UserUseCase(new UserRepository())
 

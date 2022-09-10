@@ -10,6 +10,9 @@ router.put('/product/update/:id',passport.authenticate("jwt", {session: false}) 
 router.delete('/product/delete/:id',passport.authenticate("jwt", {session: false}) , admin.deleteProduct)
 
 
+router.post('/category/add',passport.authenticate("jwt", {session: false}) ,handleUpload.single('photo_product') ,admin.addCategory)
+router.put('/category/update/:id',passport.authenticate("jwt", {session: false}) , admin.editCategory)
+router.delete('/category/delete/:id',passport.authenticate("jwt", {session: false}) , admin.deleteCategory)
 
 
 module.exports=router

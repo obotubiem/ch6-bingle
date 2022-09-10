@@ -5,7 +5,7 @@ const product = require('../controllers/product_controller')
 const isAdmin = require('../middleware/auth')
 
 
-router.get('/',isAdmin.isAdmin,passport.authenticate("jwt", {session:false}) ,product.getAllProduct)
+router.get('/',passport.authenticate("jwt", {session:false}) ,product.getAllProduct)
 
 router.get('/:id',passport.authenticate("jwt", {session: false}), product.getOneProduct)
 
