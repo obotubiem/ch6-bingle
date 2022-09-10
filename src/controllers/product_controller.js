@@ -1,6 +1,10 @@
 const res_data = require('../utils/respons_data')
 
-exports.getAllProduct = async (req, res, next)=>{
+
+module.exports = {
+
+
+getAllProduct : async (req, res, next)=>{
    try {
        let product = await req.itemUC.getProducts()
        if(product.length === 0){
@@ -14,9 +18,9 @@ exports.getAllProduct = async (req, res, next)=>{
     } catch (error) {
             next(error)    
    }   
-}
+},
 
-exports.getOneProduct = async (req, res, next)=>{
+getOneProduct : async (req, res, next)=>{
     try {
         let id = req.params.id
         let product = await req.itemUC.getProductByID(id)
@@ -30,4 +34,5 @@ exports.getOneProduct = async (req, res, next)=>{
     } catch (error) {
         next(error)
     }
+}
 }

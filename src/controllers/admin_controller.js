@@ -1,6 +1,8 @@
 const res_data = require('../utils/respons_data')
 
-exports.addProduct  = async (req, res, next)=>{
+
+module.exports = {
+addProduct : async (req, res, next)=>{
     try {
         let product ={
             name: req.body.name,
@@ -21,9 +23,9 @@ exports.addProduct  = async (req, res, next)=>{
     } catch (error) {
         next(error)
     }
-}
+},
 
-exports.editProduct = async (req, res, next) => {
+editProduct : async (req, res, next) => {
     try {
         let id = req.params.id
         let product = req.body
@@ -40,9 +42,9 @@ exports.editProduct = async (req, res, next) => {
         next(error)
     }
 
-}
+},
 
-exports.deleteProduct = async (req, res, next)=>{
+deleteProduct : async (req, res, next)=>{
     try {
         let id = req.params.id
         let delete_res = await req.itemUC.deleteProduct(id)
@@ -55,4 +57,5 @@ exports.deleteProduct = async (req, res, next)=>{
     } catch (error) {
         next(error)
     }
+}
 }

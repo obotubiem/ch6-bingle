@@ -21,9 +21,16 @@ module.exports = {
                 return res
                     .json(res_data.failed('username or password incorrect', null))
             }
-            const accessTeken = jwt.sign(
-                { id : user.id,
-                username: user.username },
+
+            let dataUser = {
+                id : user.id,
+                name : user.name,
+                username : user.username,
+                email : user.email,
+                is_admin : user.is_admin
+            }
+            const accessToken = jwt.sign(
+                { result : dataUser },
                 process.env.JWT_KEY_SECRET,
                 {
                   expiresIn: '6h',
@@ -31,7 +38,7 @@ module.exports = {
               );
           
              
-              res.json(res_data.success({ id: user.id, token: accessTeken }));
+              res.json(res_data.success({ dataUser, token: accessToken }));
         } catch (error) {
             next(error)
         }
