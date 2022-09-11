@@ -11,8 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Category, {
-        foreignKey: {name : 'category_id', allowNull:false},
-        as:'category'
+        foreignKey: {name : 'category_id', allowNull:false}
       })
     }
   }

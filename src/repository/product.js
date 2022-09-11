@@ -1,17 +1,23 @@
 const { Product } = require("../database/models")
+const {Category} = require ("../database/models")
 
 class ProductRepository {
     constructor() {
         this.ProductModel = Product
+        this.CategoryMOdel = Category
     }
 
     async getProductByID(id) {
         let data = null
         try {
             data = await this.ProductModel.findOne({
-                where: {
-                    id: id
-                }
+                where: {id: id},
+                include : [
+                    {
+                        model:this.CategoryMOdel,
+                        attributes : ['id', 'name']
+                    }
+                ]
             })
         } catch (err) {
             console.log(err)
