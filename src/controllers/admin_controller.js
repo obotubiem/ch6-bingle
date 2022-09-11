@@ -13,11 +13,19 @@ addProduct : async (req, res, next)=>{
         
         } 
         let create_res = await req.itemUC.createProduct(product)
+        let checkExistCategory = await req.categoryUC.getCategoryByID(product.category_id)
+        if(checkExistCategory === null || undefined){
+            return res
+            .status(400)
+            .json(res_data.failed('faileld, category not found please insert category corectly'))
+        }
+        
         if(create_res.is_success !==true){
             return res
            .status(400)
            .json(res_data.failed('create data failed'), null)
         }
+
         res.json(res_data.success(product))
         
     } catch (error) {
