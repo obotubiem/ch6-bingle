@@ -34,5 +34,20 @@ getOneCategory : async (req, res, next)=>{
     } catch (error) {
         next(error)
     }
+},
+getProductByCategory : async (req, res, next)=>{
+    try {
+        let id = req.params.id
+        let category = await req.categoryUC.getProductByCategoryID(id)
+        if(category == null){
+            return res
+            .status(400)
+            .json(res_data.failed('product not product', category))
+        }
+        res.status(200).json(res_data.success(category))
+
+    } catch (error) {
+        next(error)
+    }
 }
 }
