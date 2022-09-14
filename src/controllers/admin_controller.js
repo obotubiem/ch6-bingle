@@ -1,15 +1,18 @@
-const res_data = require('../utils/respons_data')
-
+const res_data = require('../helper/respons_data')
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
 addProduct : async (req, res, next)=>{
     try {
         let product ={
+            id:uuidv4(),
             name: req.body.name,
             price: req.body.price,
             stock: req.body.stock,
+            sold : req.body.sold,
+            description : req.body.description,
+            image: req.file.filename,
             category_id: req.body.category_id,
-            photo_product: req.file.filename,
         
         } 
         let create_res = await req.itemUC.createProduct(product)
@@ -17,7 +20,7 @@ addProduct : async (req, res, next)=>{
         if(checkExistCategory === null || undefined){
             return res
             .status(400)
-            .json(res_data.failed('faileld, category not found please insert category corectly'))
+            .json(res_data.failed('failed, category not found please insert category corectly'))
         }
         
         if(create_res.is_success !==true){
@@ -36,7 +39,16 @@ addProduct : async (req, res, next)=>{
 editProduct : async (req, res, next) => {
     try {
         let id = req.params.id
-        let product = req.body
+        let product ={
+            name: req.body.name,
+            price: req.body.price,
+            stock: req.body.stock,
+            sold : req.body.sold,
+            description : req.body.description,
+            image: req.file.filename,
+            category_id: req.body.category_id,
+        
+        } 
         let update_res = await req.itemUC.updateProduct(product, id)
         if(update_res.is_success !== true){
             return res

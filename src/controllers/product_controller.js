@@ -1,4 +1,4 @@
-const res_data = require('../utils/respons_data')
+const res_data = require('../helper/respons_data')
 
 
 module.exports = {
