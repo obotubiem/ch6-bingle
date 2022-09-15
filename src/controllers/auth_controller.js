@@ -65,5 +65,29 @@ module.exports = {
         } catch (error) {
             next(error)
         }
+    },
+    login : async (req, res, next)=>{
+        try {
+            
+            let{username, password}= req.body
+            let user = await req.userUC.getUserByUsername(username)
+            if(user == null){
+                return res
+                .status(400)
+                .json(res_data.failed("user or email unavaiable", null))
+            }
+            if(bcrypt.compareSync(password, user.password)!= true){
+                return res
+                .status(400)
+                .json(res_data.failed("user or email ubavaiable", null))
+            }
+            res.json({
+                status : 'ok',
+                message: 'success',
+                token : generateToken(user)
+            })
+        } catch (error) {
+            next(error)
+        }
     }
 }

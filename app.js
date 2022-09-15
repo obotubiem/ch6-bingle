@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const passport= require("./src/libs/passport")
+
 
 
 app.use('/public', express.static('public'))
@@ -36,7 +36,6 @@ app.get('/', (req, res)=>{
     res.json("test")
 }) 
 
-app.use(passport.initialize())
 app.use('/product', productRouter)
 app.use('/category', categoryRouter)
 app.use('/admin', adminRouter)

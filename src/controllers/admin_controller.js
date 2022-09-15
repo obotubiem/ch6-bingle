@@ -1,7 +1,7 @@
 const res_data = require('../helper/respons_data')
 const { v4: uuidv4 } = require('uuid');
 const url =require('../libs/handle_Upload');
-const user = require('../database/models/user');
+
 
 module.exports = {
 addProduct : async (req, res, next)=>{
