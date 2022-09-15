@@ -8,6 +8,9 @@ class User {
     async getUserByEmail(email) {
         return await this.userRepository.getUserByEmail(email)
     }
+    async getUserByPhone(phone) {
+        return await this.userRepository.getUserByPhone(phone)
+    }
 
     async getUserByID(id) {
         return await this.userRepository.getUserByID(id)

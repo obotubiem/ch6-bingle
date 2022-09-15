@@ -29,6 +29,19 @@ class UserRepository {
         }
         return user
     }
+    async getUserByPhone (phone) {
+        let user = null
+        try {
+            user = await this.UserModel.findOne({
+                where : {phone: phone} 
+                  
+            })
+        } catch (error) {
+            console.log(error)
+        }
+        return user
+    }
+
 
     async getUserByID  (id){
         let user =null

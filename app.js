@@ -18,7 +18,7 @@ const UserUseCase = require("./src/usecase/user")
 const productRouter = require("./src/routes/product_router")
 const categoryRouter = require("./src/routes/category_router")
 const adminRouter = require("./src/routes/admin_router")
-// const authRouter = require("./src/routes/auth_router")
+const authRouter = require("./src/routes/auth_router")
 
 
 
@@ -40,7 +40,7 @@ app.use(passport.initialize())
 app.use('/product', productRouter)
 app.use('/category', categoryRouter)
 app.use('/admin', adminRouter)
-// app.use('/', authRouter)
+app.use('/', authRouter)
 
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./src/docs/docs.json')
