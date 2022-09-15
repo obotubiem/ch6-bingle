@@ -2,6 +2,7 @@ module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.bulkInsert("Products", [
             {
+                id :"123e4567-e89b-12d3-a456-426614174123",
                 name: "Kaos Partai",
                 price: 45000,
                 stock: 100,
@@ -13,6 +14,7 @@ module.exports = {
                 updatedAt: new Date()
             },
             {
+                id :"123e4567-e89b-12d3-a456-426614174321",
                 name: "kemeja",
                 price: 95000,
                 stock: 100,
@@ -24,6 +26,7 @@ module.exports = {
                 updatedAt: new Date()
             },
             {
+                id :"123e4567-e89b-12d3-a456-111114174123",
                 name: "Celaja Jeans",
                 price: 145000,
                 stock: 100,
@@ -35,6 +38,7 @@ module.exports = {
                 updatedAt: new Date()
             },
             {
+                id :"123e4567-e89b-12d3-a456-4266141754321",
                 name: "Celana pendek",
                 price: 100000,
                 stock: 100,

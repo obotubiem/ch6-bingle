@@ -42,7 +42,7 @@ getProductByCategory : async (req, res, next)=>{
         if(category == null){
             return res
             .status(400)
-            .json(res_data.failed('product not product', category))
+            .json(res_data.failed('product not Found', category))
         }
         res.status(200).json(res_data.success(category))
 

@@ -17,7 +17,7 @@ addProduct : async (req, res, next)=>{
         } 
         let create_res = await req.itemUC.createProduct(product)
         let checkExistCategory = await req.categoryUC.getCategoryByID(product.category_id)
-        if(checkExistCategory === null || undefined){
+        if(checkExistCategory == null){
             return res
             .status(400)
             .json(res_data.failed('failed, category not found please insert category corectly'))
@@ -67,6 +67,10 @@ editProduct : async (req, res, next) => {
 deleteProduct : async (req, res, next)=>{
     try {
         let id = req.params.id
+        let check_Data = await req.itemUC.getProductByID(id)
+        if(!check_Data) {
+            return  res.status(404).json(res_data.failed('data not found', null))
+        }
         let delete_res = await req.itemUC.deleteProduct(id)
         if(delete_res.is_success !== true){
             return res
@@ -98,7 +102,12 @@ editCategory : async (req, res, next)=>{
     try {
         let id = req.params.id
         let category = req.body
-        let update_res = await req.categoryUC.update(category, id)
+        
+        let check_Data = await req.categoryUC.getCategoryByID(id)
+        if(check_Data == null) {
+            return  res.status(404).json(res_data.failed('data not found', null))
+        }
+        let update_res = await req.categoryUC.updateCategory(category, id)
         if(update_res.is_success !== true){
             return res
             .status(400)
@@ -114,6 +123,11 @@ editCategory : async (req, res, next)=>{
 deleteCategory : async (req, res, next)=>{
     try {
         let id = req.params.id
+        
+        let check_Data = await req.categoryUC.getCategoryByID(id)
+        if(check_Data == null) {
+            return  res.status(404).json(res_data.failed('data not found', null))
+        }
         let delete_res = await req.categoryUC.deleteCategory(id)
         if(delete_res.is_success !== true){
             return res
