@@ -1,5 +1,8 @@
+require("dotenv").config();
+const cloudinary = require('cloudinary').v2
 const multer = require('multer')
 const path = require('path')
+const fs = require('fs')
 
 const storage = multer.diskStorage({
     destination: (req ,file , cb)=>{
@@ -26,4 +29,27 @@ const upload = multer ({
     fileFilter: fileFIlter
 })
 
-module.exports=upload
+
+cloudinary.config({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key : process.env.API_KEY,
+    api_secret : process.env.API_SECRET
+})
+
+
+async function uploadCloudinary(filePath){
+    let result
+    try {
+        result = await cloudinary.uploader.upload(filePath, {
+            use_filename: true
+        })
+        fs.unlinkSync(filePath)
+        return result.url
+    } catch (error) {
+        fs.unlinkSync(filePath)
+        return null
+    }
+}
+
+
+module.exports= {upload, uploadCloudinary}

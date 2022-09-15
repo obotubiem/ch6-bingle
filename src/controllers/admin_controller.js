@@ -1,5 +1,7 @@
 const res_data = require('../helper/respons_data')
 const { v4: uuidv4 } = require('uuid');
+const url =require('../libs/handle_Upload');
+const user = require('../database/models/user');
 
 module.exports = {
 addProduct : async (req, res, next)=>{
@@ -11,10 +13,11 @@ addProduct : async (req, res, next)=>{
             stock: req.body.stock,
             sold : req.body.sold,
             description : req.body.description,
-            image: req.file.filename,
+            image: await url.uploadCloudinary(req.file.path),
             category_id: req.body.category_id,
         
         } 
+        
         let create_res = await req.itemUC.createProduct(product)
         let checkExistCategory = await req.categoryUC.getCategoryByID(product.category_id)
         if(checkExistCategory == null){

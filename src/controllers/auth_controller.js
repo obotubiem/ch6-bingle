@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt")
 const res_data = require('../helper/respons_data')
+const url = require('../libs/handle_Upload')
 const generateToken = require('../helper/jwt')
 module.exports = {
     register: async (req, res, next) => {
@@ -12,7 +13,7 @@ module.exports = {
                 password: req.body.password,
                 phone: req.body.phone,
                 email: req.body.email,
-                avatar: req.file.name,
+                avatar:  await url.uploadCloudinary(req.file.path),
                 role_id: 2
             }
             if (req.body.password !== req.body.confrimPassword) {
