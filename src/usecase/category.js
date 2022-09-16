@@ -8,8 +8,8 @@ class Category {
  async getCategory(filters){
     return await this.categoryRepository.getCategory(filters)
 }
- async getProductByCategoryID(filters){
-    return await this.categoryRepository.getProductByCategoryID(filters)
+ async getProductByCategoryID(id){
+    return await this.categoryRepository.getProductByCategoryID(id)
  }
   async createCategory(category){
     return await this.categoryRepository.createCategory(category)
