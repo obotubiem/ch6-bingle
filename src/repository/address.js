@@ -1,5 +1,4 @@
-const {Address} = require('../database/models')
-const {User} = require('../database/models')
+const {Address , User} = require('../database/models')
 
 class AddressRepository{
     constructor(){
@@ -25,9 +24,7 @@ class AddressRepository{
         let data = null
         try {
             data = await this.AddressModel.findOne({
-                where:{
-                    id:id
-                }
+                where:{id:id}
             })
         } catch (err) {
             console.log(err)

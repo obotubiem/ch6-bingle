@@ -1,5 +1,5 @@
-const { Product } = require("../database/models")
-const {Category} = require ("../database/models")
+const { Product, Category  } = require("../database/models")
+
 
 class ProductRepository {
     constructor() {
@@ -12,6 +12,13 @@ class ProductRepository {
         try {
             data = await this.ProductModel.findOne({
                 where: {id: id},
+                include:[
+                    {
+                    model :this.CategoryMOdel ,
+                    as: 'category',
+                    attributes : ['name']
+                }
+                ]
                
             })
         } catch (err) {

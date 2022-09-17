@@ -13,17 +13,14 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Role, {
         foreignKey: {name : 'role_id', allowNull:false}
       })
-    }
-    static associate(models) {
       this.hasMany(models.Address, {
         foreignKey : {name: 'user_id', allowNull:false}
       })
-    }
-    static associate(models) {
       this.hasMany(models.Order, {
         foreignKey : {name: 'user_id', allowNull:false}
       })
     }
+   
   }
   User.init({
     firstName: DataTypes.STRING,

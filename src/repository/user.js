@@ -10,10 +10,12 @@ class UserRepository {
         let user =null
         try {
             user = await this.UserModel.findAll({
+                attributes : {exclude: ['password']},
                 include:[
                     {
                     model :this.AddressModel
-                }]
+                }],
+               
             })
         } catch (error) {
             console.log(error)
