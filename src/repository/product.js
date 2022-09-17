@@ -12,12 +12,7 @@ class ProductRepository {
         try {
             data = await this.ProductModel.findOne({
                 where: {id: id},
-                include : [
-                    {
-                        model:this.CategoryMOdel,
-                        attributes : ['id', 'name']
-                    }
-                ]
+               
             })
         } catch (err) {
             console.log(err)
