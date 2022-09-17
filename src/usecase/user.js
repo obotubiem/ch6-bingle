@@ -2,6 +2,10 @@ class User {
     constructor (userRepository){
         this.userRepository = userRepository
     }
+    async getAllUser(){
+        return await this.userRepository.getAllUser()
+    }
+
     async getUserByUsername(username) {
         return await this.userRepository.getUserByUsername(username)
     }

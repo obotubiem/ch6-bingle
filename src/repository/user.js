@@ -1,9 +1,26 @@
 const{User} = require("../database/models")
+const {Address} = require('../database/models')
 
 class UserRepository {
     constructor (){
         this.UserModel = User
+        this.AddressModel = Address
     }
+    async getAllUser (){
+        let user =null
+        try {
+            user = await this.UserModel.findAll({
+                include:[
+                    {
+                    model :this.AddressModel
+                }]
+            })
+        } catch (error) {
+            console.log(error)
+        }
+        return user 
+    }
+
     async getUserByUsername (username) {
         let user = null
         try {
