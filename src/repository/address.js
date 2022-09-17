@@ -48,7 +48,7 @@ class AddressRepository{
             address : address
         }
     }
-    async updateCategory(address, id){
+    async updateAddress(address, id){
         let is_success = false
         try {
             address = await this.AddresModel.update(address, {
