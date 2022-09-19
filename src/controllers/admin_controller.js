@@ -58,13 +58,17 @@ module.exports = {
         stock: req.body.stock,
         sold: req.body.sold,
         description: req.body.description,
-        image: req.file.path,
+        image: null,
         category_id: req.body.category_id,
       };
       let image = null;
       if (req.file !== undefined) {
         image = await url.uploadCloudinary(req.file.path);
-      } 
+      } else {
+        currentImage = await req.itemUC.getProductByID(id)
+        image = currentImage.image
+        console.log(image)
+      }
       product.image = image;
 
       let update_res = await req.itemUC.updateProduct(product, id);
