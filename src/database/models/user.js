@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Order, {
         foreignKey : {name: 'user_id', allowNull:false}
       })
+      
     }
    
   }

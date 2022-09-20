@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
        this.hasMany(models.OrderDetail, {
         foreignKey: {name : 'product_id', as : 'product', allowNull:false}
       })
+      this.hasMany(models.Image_Product, {
+        foreignKey: {name : 'product_id', allowNull:false}
+      })
     }
 
     

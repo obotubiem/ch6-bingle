@@ -1,10 +1,11 @@
-const { Product, Category  } = require("../database/models")
+const { Product, Category, Image_Product  } = require("../database/models")
 
 
 class ProductRepository {
     constructor() {
         this.ProductModel = Product
         this.CategoryMOdel = Category
+        this.Image_ProuctMOdel = Image_Product
     }
 
     async getProductByID(id) {
@@ -17,7 +18,10 @@ class ProductRepository {
                     model :this.CategoryMOdel ,
                     as: 'category',
                     attributes : ['name']
-                }
+                },
+                {
+                    model :this.Image_ProuctMOdel ,
+                    attributes : ['url']}
                 ]
                
             })
