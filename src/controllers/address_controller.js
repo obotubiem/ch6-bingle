@@ -12,11 +12,11 @@ module.exports = {
             } = req.body
 
             let checkUserExist = await req.userUC.getUserByID(address.user_id)
-            if(checkUserExist == null){
+            if (checkUserExist == null) {
                 return res.status(404).json(res_data.failed('user not found', null))
             }
             let create_res = await req.addressUC.createAddress(address)
-            if(create_res.is_succsess != true){
+            if (create_res.is_succsess != true) {
                 return res.status(500).json(res_data.failed('internal server error', null))
             }
             res.status(200).json(res_data.success(address))
@@ -55,7 +55,7 @@ module.exports = {
         }
     },
 
-    editAddres : async (req, res, next)=>{
+    editAddres: async (req, res, next) => {
         let id = req.params.id
         try {
             let address = {
@@ -67,11 +67,11 @@ module.exports = {
             } = req.body
 
             let checkUserExist = await req.userUC.getUserByID(address.user_id)
-            if(checkUserExist == null){
+            if (checkUserExist == null) {
                 return res.status(404).json(res_data.failed('user not found', null))
             }
-            let create_res = await req.addressUC.updateAddress(address , id)
-            if(create_res.is_succsess != true){
+            let create_res = await req.addressUC.updateAddress(address, id)
+            if (create_res.is_succsess != true) {
                 return res.status(500).json(res_data.failed('internal server error', null))
             }
             res.status(200).json(res_data.success(address))
@@ -79,18 +79,18 @@ module.exports = {
             next(error)
         }
     },
-    deleteAddress : async (req, res, next)=>{
+    deleteAddress: async (req, res, next) => {
         try {
             let id = req.params.id
             let check_Data = await req.addressUC.getAddressByID(id)
-            if(!check_Data) {
-                return  res.status(404).json(res_data.failed('data not found', null))
+            if (!check_Data) {
+                return res.status(404).json(res_data.failed('data not found', null))
             }
             let delete_res = await req.addressUC.deleteAddress(id)
-            if(delete_res.is_success !== true){
+            if (delete_res.is_success !== true) {
                 return res
-                .status(400)
-                .json(res_data.failed ('delete data failed'))
+                    .status(400)
+                    .json(res_data.failed('delete data failed'))
             }
             res.json(res_data.success('success delete address'))
         } catch (error) {

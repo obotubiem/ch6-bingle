@@ -1,5 +1,4 @@
-const { Category } = require("../database/models")
-const { Product } = require("../database/models")
+const { Category, Product } = require("../database/models")
 
 class CategoryRepository {
     constructor(){

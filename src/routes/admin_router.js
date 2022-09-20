@@ -1,20 +1,26 @@
 const express = require('express')
 const router = express.Router()
-const admin = require("../controllers/admin_controller")
-const user = require('../controllers/admin_user_controller')
+const product = require("../controllers/product_controller")
+const category = require ("../controllers/category_controller")
+const user = require('../controllers/user_controller')
+const address = require("../controllers/address_controller")
 const handleUpload =require("../libs/handle_Upload")
-const {authentication, authorization } = require('../middleware/auth')
 
 router.get('/user',user.getAllUser)
 
-router.post('/product/add',handleUpload.upload.single('image') ,admin.addProduct)
-router.put('/product/update/:id',handleUpload.upload.single('image'), admin.editProduct)
-router.delete('/product/delete/:id', admin.deleteProduct)
+router.post('/product/add',handleUpload.upload.single('image') ,product.addProduct)
+router.put('/product/update/:id',handleUpload.upload.single('image'), product.editProduct)
+router.delete('/product/delete/:id', product.deleteProduct)
 
 
-router.post('/category/add' ,admin.addCategory)
-router.put('/category/update/:id', admin.editCategory)
-router.delete('/category/delete/:id', admin.deleteCategory)
+router.post('/category/add' ,category.addCategory)
+router.put('/category/update/:id', category.editCategory)
+router.delete('/category/delete/:id', category.deleteCategory)
+
+// address 
+router.post('/customer/add', address.addAddress)
+router.put('/customer/update', address.editAddres)
+router.delete('/customer/:id', address.deleteAddress)
 
 
 module.exports=router

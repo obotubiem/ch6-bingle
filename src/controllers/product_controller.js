@@ -1,38 +1,132 @@
 const res_data = require('../helper/respons_data')
-
+const { v4: uuidv4 } = require("uuid");
+const url = require("../libs/handle_Upload");
 
 module.exports = {
+    addProduct: async (req, res, next) => {
+        try {
+            let product = {
+                id: uuidv4(),
+                name: req.body.name,
+                price: req.body.price,
+                stock: req.body.stock,
+                sold: req.body.sold,
+                description: req.body.description,
+                image: null,
+                category_id: req.body.category_id,
+            };
+            let image = null;
+            if (req.file !== undefined) {
+                image = await url.uploadCloudinary(req.file.path);
+            } else {
+                image = process.env.ITEM_URL;
+            }
+            product.image = image;
 
+            let create_res = await req.itemUC.createProduct(product);
+            let checkExistCategory = await req.categoryUC.getCategoryByID(
+                product.category_id
+            );
+            if (checkExistCategory == null) {
+                return res
+                    .status(400)
+                    .json(
+                        res_data.failed(
+                            "failed, category not found please insert category corectly"
+                        )
+                    );
+            }
 
-getAllProduct : async (req, res, next)=>{
-   try {
-       let product = await req.itemUC.getProducts()
-       if(product.length === 0){
-           return res
-           .status(400)
-           .json(res_data.failed('Item not found', product))
-        } else
-        res.json(res_data.success(product))
-        
-        
-    } catch (error) {
-            next(error)    
-   }   
-},
+            if (create_res.is_success !== true) {
+                return res
+                    .status(400)
+                    .json(res_data.failed("create data failed"), null);
+            }
 
-getOneProduct : async (req, res, next)=>{
-    try {
-        let id = req.params.id
-        let product = await req.itemUC.getProductByID(id)
-        if(product ==null){
-            return res
-            .status(400)
-            .json(res_data.failed('Product not found', product))
+            res.json(res_data.success(product));
+        } catch (error) {
+            next(error);
         }
+    },
 
-        res.status(200).json(res_data.success(product))
-    } catch (error) {
-        next(error)
+    editProduct: async (req, res, next) => {
+        try {
+            let id = req.params.id;
+            let product = {
+                name: req.body.name,
+                price: req.body.price,
+                stock: req.body.stock,
+                sold: req.body.sold,
+                description: req.body.description,
+                image: null,
+                category_id: req.body.category_id,
+            };
+            let image = null;
+            if (req.file !== undefined) {
+                image = await url.uploadCloudinary(req.file.path);
+            } else {
+                currentImage = await req.itemUC.getProductByID(id)
+                image = currentImage.image
+                console.log(image)
+            }
+            product.image = image;
+
+            let update_res = await req.itemUC.updateProduct(product, id);
+            if (update_res.is_success !== true) {
+                return res.status(400).json(res_data.failed("update data failed"));
+            }
+            res.json(res_data.success(product));
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    deleteProduct: async (req, res, next) => {
+        try {
+            let id = req.params.id;
+            let check_Data = await req.itemUC.getProductByID(id);
+            if (!check_Data) {
+                return res.status(404).json(res_data.failed("data not found", null));
+            }
+            let delete_res = await req.itemUC.deleteProduct(id);
+            if (delete_res.is_success !== true) {
+                return res.status(400).json(res_data.failed("delete data failed"));
+            }
+            res.json(res_data.success("succes delete product"));
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    getAllProduct: async (req, res, next) => {
+        try {
+            let product = await req.itemUC.getProducts()
+            if (product.length === 0) {
+                return res
+                    .status(400)
+                    .json(res_data.failed('Item not found', product))
+            } else
+                res.json(res_data.success(product))
+
+
+        } catch (error) {
+            next(error)
+        }
+    },
+
+    getOneProduct: async (req, res, next) => {
+        try {
+            let id = req.params.id
+            let product = await req.itemUC.getProductByID(id)
+            if (product == null) {
+                return res
+                    .status(400)
+                    .json(res_data.failed('Product not found', product))
+            }
+
+            res.status(200).json(res_data.success(product))
+        } catch (error) {
+            next(error)
+        }
     }
-}
 }

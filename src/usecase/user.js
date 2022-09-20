@@ -18,6 +18,9 @@ class User {
 
     async getUserByID(id) {
         return await this.userRepository.getUserByID(id)
+    } 
+    async updateUser(user, id) {
+        return await this.userRepository.getUserByID(user, id)
     }
 
     async createUser(user){

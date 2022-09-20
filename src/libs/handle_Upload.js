@@ -11,7 +11,7 @@ if(!fs.existsSync(dirPath)){
 
 const storage = multer.diskStorage({
     destination: (req ,file , cb)=>{
-        cb(null, path.join(__dirname, '../public'))
+        cb(null, path.join(__dirname, '../../public'))
     },
     filename : (req, file ,cb)=>{
         cb(null, Date.now()+ '_' + file.originalname)

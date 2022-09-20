@@ -13,7 +13,7 @@ module.exports = {
                 password: req.body.password,
                 phone: req.body.phone,
                 email: req.body.email,
-                avatar:  await url.uploadCloudinary(req.file.path),
+                avatar: await url.uploadCloudinary(req.file.path),
                 role_id: 2
             }
             if (req.body.password !== req.body.confrimPassword) {
@@ -30,7 +30,7 @@ module.exports = {
             let checkUsernameExits = await req.userUC.getUserByUsername(req.body.username)
             let checkEmailExits = await req.userUC.getUserByEmail(user.email)
             let checkPhoneExits = await req.userUC.getUserByPhone(user.phone)
-       
+
             if (checkUsernameExits != null) {
                 return res
                     .status(400)
@@ -47,11 +47,11 @@ module.exports = {
                     .json(res_data.failed("Phone not aviabel", null))
             }
             let addUser = await req.userUC.createUser(user)
-                if (addUser.is_success != true){
-                    return res
+            if (addUser.is_success != true) {
+                return res
                     .status(400)
                     .json(res_data.failed("internal server error", null))
-                }
+            }
             res.json(
                 res_data.success({
                     name: user.name,
@@ -66,25 +66,25 @@ module.exports = {
             next(error)
         }
     },
-    login : async (req, res, next)=>{
+    login: async (req, res, next) => {
         try {
-            
-            let{username, password}= req.body
+
+            let { username, password } = req.body
             let user = await req.userUC.getUserByUsername(username)
-            if(user == null){
+            if (user == null) {
                 return res
-                .status(400)
-                .json(res_data.failed("user or email unavaiable", null))
+                    .status(400)
+                    .json(res_data.failed("user or email unavaiable", null))
             }
-            if(bcrypt.compareSync(password, user.password)!= true){
+            if (bcrypt.compareSync(password, user.password) != true) {
                 return res
-                .status(400)
-                .json(res_data.failed("user or email ubavaiable", null))
+                    .status(400)
+                    .json(res_data.failed("user or email ubavaiable", null))
             }
             res.json({
-                status : 'ok',
+                status: 'ok',
                 message: 'success',
-                token : generateToken(user)
+                token: generateToken(user)
             })
         } catch (error) {
             next(error)

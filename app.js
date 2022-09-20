@@ -22,7 +22,7 @@ const productRouter = require("./src/routes/product_router")
 const categoryRouter = require("./src/routes/category_router")
 const adminRouter = require("./src/routes/admin_router")
 const authRouter = require("./src/routes/auth_router")
-const addressRouter = require("./src/routes/address")
+const addressRouter = require("./src/routes/address_router")
 
 
 

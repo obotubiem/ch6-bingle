@@ -71,6 +71,21 @@ class UserRepository {
         }
         return user
     }
+    async updateUser(user, id) {
+        let is_success = false
+        try {
+            user = await this.UserModel.update(user, {
+                where :{id:id}
+            })
+            is_success = true
+        } catch (error) {
+            console(error)
+        }
+        return {
+            is_success : is_success,
+            user : user
+        }
+    }
 
     async createUser(user) {
         let is_success = false
