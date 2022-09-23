@@ -24,3 +24,4 @@ const endpointsFiles = ['./app.js']
 swaggerAutogen(outputFile, endpointsFiles, doc).then((r) => {
   console.log(r)
 })
+

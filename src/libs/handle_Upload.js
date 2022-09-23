@@ -4,14 +4,14 @@ const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
 
-dirPath = './public'
+dirPath = './src/public'
 if(!fs.existsSync(dirPath)){
     fs.mkdirSync(dirPath)
 }
 
 const storage = multer.diskStorage({
     destination: (req ,file , cb)=>{
-        cb(null, path.join(__dirname, '../../public'))
+        cb(null, path.join(__dirname, '../public'))
     },
     filename : (req, file ,cb)=>{
         cb(null, Date.now()+ '_' + file.originalname)
