@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Category, 
-       {foreignKey: 'category_id', as :'category',allowNull:false})
+       {foreignKey: 'category_id',allowNull:false})
        
        this.hasMany(models.OrderDetail, {
-        foreignKey: {name : 'product_id', as : 'product', allowNull:false}
+        foreignKey: {name : 'product_id', allowNull:false}
       })
       this.hasMany(models.Image_Product, {
         foreignKey: {name : 'product_id', allowNull:false}

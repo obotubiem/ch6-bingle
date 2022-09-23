@@ -5,20 +5,13 @@ class CategoryRepository {
         this.CategoryModel = Category
         this.ProductModel = Product
     }
-    async getCategoryByID(id){
-        let data = null
-        try {
-            data = await this.CategoryModel.findOne({
-                where:{
-                    id:id
-                }
-            })
-        } catch (err) {
-            console.log(err)
-            return null
-        }
-        return data
-    }
+    async getCategoryByID(id) {
+        return await this.CategoryModel.findOne({
+          where: {
+            id,
+          },
+        });
+      }
     async getProductByCategoryID(id){
         let data = null
         try {

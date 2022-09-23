@@ -1,24 +1,107 @@
 class Item {
-    constructor(itemRepository) {
-        this.itemRepository = itemRepository
-    }
+  constructor(productRepository, categoryRepository) {
+    this.productRepository = productRepository;
+    this.categoryRepository = categoryRepository;
+  }
 
-    async getProductByID(id) {
-        return await this.itemRepository.getProductByID(id)
+  async getProductByID(id) {
+    let product = null;
+    let is_success = false;
+    product = await this.productRepository.getProductByID(id);
+    if (product == null) {
+      return { message: "product not found" };
     }
+    is_success = true;
+    return {
+      is_success: is_success,
+      product: product,
+    };
+  }
 
-    async getProducts(filters) {
-        return await this.itemRepository.getProducts(filters)
+  async getProducts(filters) {
+    let product = null;
+    let is_success = false;
+    product = await this.productRepository.getProducts(filters);
+    if (product == null) {
+      return { message: "product not found" };
     }
-    async createProduct(product) {
-        return await this.itemRepository.createProduct(product)
+    is_success = true;
+    return {
+      is_success: is_success,
+      product: product,
+    };
+  }
+
+  async addNewProduct(data_product) {
+    let is_success = false;
+    let product = null;
+
+    let checkExistCategory = await this.categoryRepository.getCategoryByID(
+      data_product.category_id
+    );
+    if (checkExistCategory == null) {
+      return {
+        message: "failed add product, category not found",
+      };
     }
-    async updateProduct(product, id) {
-        return await this.itemRepository.updateProduct(product, id)
+    product = await this.productRepository.createProduct(data_product);
+    if (product == null) {
+      return {
+        message: "something went wrong",
+      };
     }
-    async deleteProduct(id){
-        return await this.itemRepository.deleteProduct(id)
+    is_success = true;
+    return {
+      is_success: is_success,
+      product: product,
+    };
+  }
+
+  async updateProduct(product_update, id) {
+    let is_success = false;
+    let product = null;
+
+    let checkExistCategory = await this.categoryRepository.getCategoryByID(
+      product_update.category_id
+    );
+    if (checkExistCategory == null) {
+      return {
+        message: "failed add product, category not found",
+      };
     }
+    product = await this.productRepository.updateProduct(product_update, id);
+    if (product == null) {
+      return {
+        message: "something went wrong",
+      };
+    }
+    is_success = true;
+    return {
+      is_success: is_success,
+      product: product,
+    };
+  }
+  async deleteProduct(id) {
+    let is_success = false;
+
+    let checkExistProduct = await this.productRepository.getProductByID(id);
+    if (checkExistProduct == null) {
+      return {
+        message: "failed delete product, product not found",
+      };
+    }
+    let product = await this.productRepository.deleteProduct(id);
+    if (product == null) {
+      return {
+        message: "something went wrong",
+      };
+    }
+    is_success = true;
+    return {
+      is_success: is_success,
+      product: product,
+    };
+  }
 }
 
 module.exports = Item;

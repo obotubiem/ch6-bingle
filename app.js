@@ -9,7 +9,7 @@ app.use(express.urlencoded({extended:false}))
 const ProductRepository = require("./src/repository/product")
 const ItemUseCase = require("./src/usecase/item")
 
-const CategoriesRepository =require("./src/repository/category")
+const CategoryRepository =require("./src/repository/category")
 const CategoryUseCase = require("./src/usecase/category")
 
 const UserRepository =require("./src/repository/user")
@@ -27,8 +27,11 @@ const addressRouter = require("./src/routes/address_router")
 
 
 const addressUC = new AddressUseCase(new AddressRepository())
-const categoryUC = new CategoryUseCase(new CategoriesRepository())
-const itemUC = new ItemUseCase(new ProductRepository())
+const categoryUC = new CategoryUseCase(new CategoryRepository())
+const itemUC = new ItemUseCase(
+    new ProductRepository(),
+    new CategoryRepository()
+    )
 const userUC = new UserUseCase(new UserRepository())
 
 app.use((req, res, next)=>{
