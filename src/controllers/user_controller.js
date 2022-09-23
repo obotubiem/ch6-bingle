@@ -10,8 +10,8 @@ module.exports = {
                     .json(res_data.failed('user not found', null))
             } else
                 res.json(res_data.success(user))
-        } catch (error) {
-            next(error)
+        } catch (e) {
+            next(e)
         }
     },
     getOneUser : async (req, res, next) =>{
@@ -24,8 +24,8 @@ module.exports = {
                 .json(res_data.failed('user not found', null))
             }
             res.status(200).json(res_data.success(user))
-        } catch (error) {
-            next(error)
+        } catch (e) {
+            next(e)
         }
     },
     editUser : async (req, res, next) =>{
@@ -39,8 +39,8 @@ module.exports = {
                 .status(500)
                 .json(res_data.failed("internal server error", null))
             } 
-        } catch (error) {
-            next(error)
+        } catch (e) {
+            next(e)
             
         }
     }
