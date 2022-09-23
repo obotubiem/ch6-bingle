@@ -1,5 +1,6 @@
 const{User} = require("../database/models")
 const {Address} = require('../database/models')
+const bcrypt = require("bcrypt")
 
 class UserRepository {
     constructor (){
@@ -87,18 +88,35 @@ class UserRepository {
         }
     }
 
-    async createUser(user) {
-        let is_success = false
+    async registerUser(user_data) {
+        user_data.password = bcrypt.hashSync(user_data.password, 10)
+        user_data.is_admin = false
+
+        let user = null
         try {
-            user = await this.UserModel.create(user)
-            is_success = true
-        } catch (error) {
-            console.log(error)
+            user = await this.UserModel.create(user_data)
+        } catch (e) {
+            console.error(e)
+            return null
         }
-        return {
-            is_success : is_success,
-            user : user
+
+        return user
+    }
+    async loginUser(username, password){
+        let user = null
+        try {
+            user = await this.getUserByUsername(username)
+            if(user === null){
+                return user
+            }
+        } catch (e) {
+            console.log(e)
+            return null
         }
+        if(!bcrypt.compareSync(password, user.password)){
+            return null
+        }
+        return user
     }
 }
 

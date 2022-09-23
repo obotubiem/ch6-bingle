@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt")
 const res_data = require('../helper/respons_data')
 const url = require('../libs/handle_Upload')
 const generateToken = require('../helper/jwt')
@@ -13,7 +12,7 @@ module.exports = {
                 password: req.body.password,
                 phone: req.body.phone,
                 email: req.body.email,
-                avatar: await url.uploadCloudinary(req.file.path),
+                avatar: null,
                 role_id: 2
             }
             if (req.body.password !== req.body.confrimPassword) {
@@ -21,37 +20,20 @@ module.exports = {
                     .status(400)
                     .json(res_data.failed("password and confrimPassword not", null))
             }
-            let password = bcrypt.hashSync(req.body.password, 10)
-            let confrimPassword = bcrypt.hashSync(req.body.confrimPassword, 10)
+           
+          let res_user = await req.userUC.register(user)
+           if(res_user.is_success != true){
+           return res.status(400).json(res_data.failed(res_user.message)) 
+           }
+           let avatar = null
+           if(req.file != undefined){
+            avatar = await url.uploadCloudinary(req.file.path)
+           } else{
+            avatar = process.env.PROFILE_URL
+           }
+           user.avatar = avatar
 
-            user.password = password
-            user.confrimPassword = confrimPassword
 
-            let checkUsernameExits = await req.userUC.getUserByUsername(req.body.username)
-            let checkEmailExits = await req.userUC.getUserByEmail(user.email)
-            let checkPhoneExits = await req.userUC.getUserByPhone(user.phone)
-
-            if (checkUsernameExits != null) {
-                return res
-                    .status(400)
-                    .json(res_data.failed("username not aviabel", null))
-            }
-            if (checkEmailExits != null) {
-                return res
-                    .status(400)
-                    .json(res_data.failed("Email not aviabel", null))
-            }
-            if (checkPhoneExits != null) {
-                return res
-                    .status(400)
-                    .json(res_data.failed("Phone not aviabel", null))
-            }
-            let addUser = await req.userUC.createUser(user)
-            if (addUser.is_success != true) {
-                return res
-                    .status(400)
-                    .json(res_data.failed("internal server error", null))
-            }
             res.json(
                 res_data.success({
                     name: user.name,
@@ -59,35 +41,28 @@ module.exports = {
                     email: user.email,
                     phone: user.phone,
                     avatar: user.avatar,
-                    token: generateToken(user)
+                    token: generateToken(res_user.user)
                 })
             )
-        } catch (error) {
-            next(error)
+        } catch (e) {
+            next(e)
         }
     },
     login: async (req, res, next) => {
         try {
-
-            let { username, password } = req.body
-            let user = await req.userUC.getUserByUsername(username)
-            if (user == null) {
-                return res
-                    .status(400)
-                    .json(res_data.failed("user or email unavaiable", null))
-            }
-            if (bcrypt.compareSync(password, user.password) != true) {
-                return res
-                    .status(400)
-                    .json(res_data.failed("user or email ubavaiable", null))
-            }
+         let { username, password } = req.body
+           
+         let res_user = await req.userUC.login(username, password)
+         if(res_user.is_success != true){
+            res.status(404).json(res_data.failed(res_user.message))
+         }
             res.json({
                 status: 'ok',
                 message: 'success',
-                token: generateToken(user)
+                token: generateToken(res_user.user)
             })
-        } catch (error) {
-            next(error)
+        } catch (e) {
+            next(e)
         }
     }
 }
