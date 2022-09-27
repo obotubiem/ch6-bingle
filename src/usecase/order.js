@@ -27,12 +27,13 @@ class Order {
       status: order_constants.ORDER_PENDING,
     };
     let order = null;
-    order = await this.orderRepository.getPendingOrderByUserID(user_id);
-    if (order == null) {
-      order = await this.orderRepository.createOrder(order_data);
-      is_success = true;
+    order = await this.orderRepository.createOrder(order_data);
+    if(order === null){
+      return { message : 'something went error' }
     }
-
+    is_success = true;
+   
+    order = await this.orderRepository.getPendingOrderByUserID(user_id);
     await this.addOrderDetails(order.id, items);
     return {
       is_success: is_success,
@@ -46,6 +47,7 @@ class Order {
       }
       let item = null;
       item = await this.productRepository.getItemByID(item[i].id);
+      console.log(item)
       if (item != null) {
         let detail = {
           order_id: order_id,

@@ -13,8 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.OrderDetail, {
         foreignKey: {name : 'order_id', allowNull:false}
       })
-    }
-    static associate(models) {
       this.belongsTo(models.User, {
         foreignKey : {name: 'user_id', allowNull:false}
       })

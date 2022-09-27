@@ -15,10 +15,19 @@ module.exports = {
   createOrder: async (req, res, next) => {
     let id = req.params.id;
     let items = req.body;
+    let order = await req.orderUC.getOrder(id)
     try {
-      let res_order = await req.orderUC.addOrderDetails(id, items);
-
-      res.status(200).json(res_data.success(res_order));
+      if(order === null){
+        let create_res = await req.orderUC.createOrderUser(id, items);  
+        console.log(create_res)
+        if (create_res.is_success !== true){
+          res.status(400).json(create_res.message)
+        }
+      } else {
+        await req.orderUC.addOrderDetails(order.id, items)
+      }
+      order = await req.orderUC.getOrder(id)
+      res.status(200).json(res_data.success(order));
     } catch (e) {
       next(e);
     }

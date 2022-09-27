@@ -14,8 +14,8 @@ class OrderRepository {
         })
         return details
     }
-    async createOrderDetails (order_id){
-        return await this.OrderDetailRepository.create(order_id)
+    async createOrderDetails (detail){
+        return await this.OrderDetailRepository.create(detail)
     }
 }
 

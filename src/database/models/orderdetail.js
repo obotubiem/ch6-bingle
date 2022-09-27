@@ -14,11 +14,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: {name : 'order_id', allowNull:false}
       })
     }
-    static associate(models) {
-      this.belongsTo(models.Product, {
-        foreignKey: {name : 'product_id', allowNull:false}
-      })
-    }
   }
   OrderDetail.init({
     order_id: DataTypes.INTEGER,

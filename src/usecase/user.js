@@ -22,35 +22,19 @@ class User {
     let user = null;
     user = await this.userRepository.getUserByUsername(user_data.username);
     if (user != null) {
-      return {
-        is_success: is_success,
-        user: user,
-        message: "username already exist",
-      };
+      return {message: "username already exist"};
     }
     user = await this.userRepository.getUserByEmail(user_data.email);
     if (user != null) {
-      return {
-        is_success: is_success,
-        user: user,
-        message: "email already exist",
-      };
+      return {message: "email already exist"};
     }
     user = await this.userRepository.getUserByPhone(user_data.phone);
     if (user != null) {
-      return {
-        is_success: is_success,
-        user: user,
-        message: "phone already exist",
-      };
+      return {message: "phone already exist"};
     }
     user = await this.userRepository.registerUser(user_data);
     if (user == null) {
-      return {
-        is_success: is_success,
-        user: user,
-        message: "somthing went wrong",
-      };
+      return {message: "somthing went wrong"};
     }
     is_success = true;
     return {
@@ -63,11 +47,7 @@ class User {
         let user = null
         user = await this.userRepository.loginUser(username, password)
         if(user == null){
-            return {
-                is_success: is_success,
-                user: user,
-                message: "incorect username or password",
-              };
+            return {message: "incorect username or password",};
         }
         is_success = true
         return{
