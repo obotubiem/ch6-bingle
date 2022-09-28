@@ -6,37 +6,32 @@ class AddressRepository {
     this.UserModel = User;
   }
   async getAllAddress() {
-    let data = await this.AddressModel.findAll({
+   return await this.AddressModel.findAll({
       include: [
         {
           model: this.UserModel,
         },
       ],
     });
-    return data;
   }
-  async getAddressByID(id) {
-    data = await this.AddressModel.findOne({
-      where: { id: id },
+  async getAddressByUserID(user_id) {
+    return await this.AddressModel.findAll({
+      where: { user_id: user_id },
     });
-    return data;
+   
   }
   async createAddress(address) {
-    let data = await this.AddressModel.create(address);
-
-    return data;
+    return await this.AddressModel.create(address);
   }
   async updateAddress(address, id) {
-    let data = await this.AddresModel.update(address, {
+  return await this.AddresModel.update(address, {
       where: { id: id },
     });
-    return data;
   }
   async deleteAddress(id) {
-    data = await this.AddressModel.destroy({
+  return await this.AddressModel.destroy({
       where: { id: id },
     });
-    return address;
   }
 }
 

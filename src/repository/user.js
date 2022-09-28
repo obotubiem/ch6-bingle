@@ -66,7 +66,9 @@ class UserRepository {
     async getUserByID  (id){
         let user =null
         try {
-            user = await this.UserModel.findOne(id)
+            user = await this.UserModel.findOne({
+                where : {id : id}
+            })
         } catch (error) {
             console.log(error)
         }

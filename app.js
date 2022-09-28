@@ -32,7 +32,10 @@ const orderRouter = require("./src/routes/order_router")
 
 
 const userUC = new UserUseCase(new UserRepository())
-const addressUC = new AddressUseCase(new AddressRepository())
+const addressUC = new AddressUseCase(
+    new AddressRepository(),
+    new UserRepository()
+    )
 const categoryUC = new CategoryUseCase(new CategoryRepository())
 const itemUC = new ItemUseCase(
     new ProductRepository(),
