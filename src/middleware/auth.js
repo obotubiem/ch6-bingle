@@ -10,24 +10,15 @@ let getToken = (authHeader) => {
 };
 
 module.exports = {
-  
-    authorization: (req, res, next) => {
-    if (req.headers["authorization"]!= "string") {
-      return(res.status(401).json(res_data.failed("unauthrizd", null)));
-    }
-    let token = getToken(req.headers["authorization"]);
-    let payload = null;
+  authorization: (req, res, next) => {
+    const token = req.headers["authorization"]
     try {
-      payload = jwt.verify(token, process.env.JWT_KEY_SECRET);
+      data = jwt.verify(token, process.env.JWT_KEY_SECRET);
+      req.user = data
+      next()
     } catch (error) {
-      return res.status(401).json(res_data.failed("unauthrized", null));
+      return res.status(401).json(res_data.failed("unauthorized", null));
     }
-    req.user = {
-      id: payload.id,
-      username: payload.username,
-      email: payload.email,
-    };
-    next()
   },
   authentication: {
     admin: (req, res, next) => {

@@ -1,28 +1,32 @@
-const { Product, Category, Image_Product } = require("../database/models");
+const { Product, Category, ImageProduct, OrderDetail } = require("../database/models");
 
 class ProductRepository {
   constructor() {
-    this.ProductModel = Product;
-    this.CategoryModel = Category;
-    this.Image_ProductModel = Image_Product;
+    this.productModel = Product;
+    this.categoryModel = Category;
+    this.imageProductModel = ImageProduct;
+    this.orderDetailModel = OrderDetail;
   }
 
   async getProductByID(id) {
     let data = null;
     try {
-      data = await this.ProductModel.findOne({
+      data = await this.productModel.findOne({
         where: { id: id },
         include: [
           {
-            model: this.CategoryModel,
+            model: this.categoryModel,
+            as: "category",
             attributes: ["name"],
           },
           {
-            model: this.Image_ProductModel,
+            model: this.imageProductModel,
+            as: 'image_products',
             attributes: ["url"],
           },
         ],
-      });
+      })
+
       return data;
     } catch (e) {
       console.log(e);
@@ -32,7 +36,7 @@ class ProductRepository {
   async getProducts(product) {
     let data = null;
     try {
-      data = await this.ProductModel.findAll(product);
+      data = await this.productModel.findAll(product);
     } catch (err) {
       console.log(err);
       return null;
@@ -41,15 +45,15 @@ class ProductRepository {
   }
 
   async createProduct(product) {
-    return await this.ProductModel.create(product);
+    return await this.productModel.create(product);
   }
   async updateProduct(product, id) {
-    return await this.ProductModel.update(product, {
+    return await this.productModel.update(product, {
       where: { id: id },
     });
   }
   async deleteProduct(id) {
-    return await this.ProductModel.destroy({
+    return await this.productModel.destroy({
       where: { id: id },
     });
   }
