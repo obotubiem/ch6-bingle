@@ -1,22 +1,30 @@
-const {OrderDetail} = require('../database/models')
+const { OrderDetail } = require('../database/models')
 
-class OrderRepository {
-    constructor(){
+class OrderDetailRepository {
+    constructor() {
         this.OrderDetailRepository = OrderDetail
     }
 
-    async getOrderDetails(order_id){
-        let details = []
-        details = this.OrderDetailRepository.findAll({
-            where : {
-                order_id : order_id
+    async getOrderDetails(order_id) {
+        return await this.OrderDetailRepository.findAll({
+            where: {
+                order_id: order_id
             }
         })
-        return details
     }
-    async createOrderDetails (detail){
+
+    async createOrderDetails(detail) {
         return await this.OrderDetailRepository.create(detail)
+    }
+
+    async getByOrderAndProduct(order_id, product_id) {
+        return await this.OrderDetailRepository.findOne({
+            where: {
+                order_id: order_id,
+                product_id: product_id,
+            }
+        })
     }
 }
 
-module.exports = OrderRepository
+module.exports = OrderDetailRepository

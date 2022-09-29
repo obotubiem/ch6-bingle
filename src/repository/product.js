@@ -9,9 +9,9 @@ class ProductRepository {
   }
 
   async getProductByID(id) {
-    let data = null;
+    
     try {
-      data = await this.productModel.findOne({
+      return await this.productModel.findOne({
         where: { id: id },
         include: [
           {
@@ -27,7 +27,6 @@ class ProductRepository {
         ],
       })
 
-      return data;
     } catch (e) {
       console.log(e);
     }

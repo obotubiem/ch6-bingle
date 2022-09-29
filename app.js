@@ -70,6 +70,4 @@ const order = require('./src/internal/constants/order')
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 
-
-
 module.exports = app
