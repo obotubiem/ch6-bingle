@@ -1,35 +1,22 @@
-const{User} = require("../database/models")
-const {Address} = require('../database/models')
+const { User } = require("../database/models")
+const { Address } = require('../database/models')
 const bcrypt = require("bcrypt")
 
 class UserRepository {
-    constructor (){
+    constructor() {
         this.UserModel = User
         this.AddressModel = Address
     }
-    async getAllUser (){
-        let user =null
+    async getAllUser() {
+        let user = null
         try {
             user = await this.UserModel.findAll({
-                attributes : {exclude: ['password']},
-                include:[
+                attributes: { exclude: ['password'] },
+                include: [
                     {
-                    model :this.AddressModel
-                }],
-               
-            })
-        } catch (error) {
-            console.log(error)
-        }
-        return user 
-    }
+                        model: this.AddressModel
+                    }],
 
-    async getUserByUsername (username) {
-        let user = null
-        try {
-            user = await this.UserModel.findOne({
-                where : {username: username} 
-                  
             })
         } catch (error) {
             console.log(error)
@@ -37,24 +24,37 @@ class UserRepository {
         return user
     }
 
-    async getUserByEmail (email) {
+    async getUserByUsername(username) {
         let user = null
         try {
             user = await this.UserModel.findOne({
-                where : {email: email} 
-                  
+                where: { username: username }
+
             })
         } catch (error) {
             console.log(error)
         }
         return user
     }
-    async getUserByPhone (phone) {
+
+    async getUserByEmail(email) {
         let user = null
         try {
             user = await this.UserModel.findOne({
-                where : {phone: phone} 
-                  
+                where: { email: email }
+
+            })
+        } catch (error) {
+            console.log(error)
+        }
+        return user
+    }
+    async getUserByPhone(phone) {
+        let user = null
+        try {
+            user = await this.UserModel.findOne({
+                where: { phone: phone }
+
             })
         } catch (error) {
             console.log(error)
@@ -63,11 +63,11 @@ class UserRepository {
     }
 
 
-    async getUserByID  (id){
-        let user =null
+    async getUserByID(id) {
+        let user = null
         try {
             user = await this.UserModel.findOne({
-                where : {id : id}
+                where: { id: id }
             })
         } catch (error) {
             console.log(error)
@@ -78,15 +78,15 @@ class UserRepository {
         let is_success = false
         try {
             user = await this.UserModel.update(user, {
-                where :{id:id}
+                where: { id: id }
             })
             is_success = true
         } catch (error) {
             console(error)
         }
         return {
-            is_success : is_success,
-            user : user
+            is_success: is_success,
+            user: user
         }
     }
 
@@ -104,18 +104,19 @@ class UserRepository {
 
         return user
     }
-    async loginUser(username, password){
+
+    async loginUser(username, password) {
         let user = null
         try {
             user = await this.getUserByUsername(username)
-            if(user === null){
+            if (user === null) {
                 return user
             }
         } catch (e) {
             console.log(e)
             return null
         }
-        if(!bcrypt.compareSync(password, user.password)){
+        if (!bcrypt.compareSync(password, user.password)) {
             return null
         }
         return user

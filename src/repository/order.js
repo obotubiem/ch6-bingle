@@ -1,4 +1,4 @@
-const { Order, User, OrderDetail} = require("../database/models");
+const { Order, User, OrderDetail } = require("../database/models");
 const order_constants = require("../internal/constants/order");
 class OrderRepository {
   constructor() {
@@ -18,20 +18,20 @@ class OrderRepository {
           attributes: ['id', 'username']
         },
         {
-          model : this.OrderDetail
+          model: this.OrderDetail
         }
       ]
     });
     return order
-  
+
   }
 
   async createOrder(orders) {
-   let order = null
-   order =  await this.OrderModel.create(orders);
-   console.log(order)
-   return order
-     }
+    let order = null
+    order = await this.OrderModel.create(orders);
+    console.log(order)
+    return order
+  }
 
 }
 
