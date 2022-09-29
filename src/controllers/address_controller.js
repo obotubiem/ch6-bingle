@@ -37,7 +37,7 @@ module.exports = {
     },
     getAddressByUserID: async (req, res, next) => {
         try {
-            let user_id = req.body
+            let user_id = req.params.id
             let address = await req.addressUC.getAddressByUserID(user_id)
             if (address.is_success !== true) {
                 return res
@@ -61,13 +61,9 @@ module.exports = {
                 user_id
             } = req.body
 
-            let checkUserExist = await req.userUC.getUserByID(address.user_id)
-            if (checkUserExist == null) {
-                return res.status(404).json(res_data.failed('user not found', null))
-            }
             let create_res = await req.addressUC.updateAddress(address, id)
-            if (create_res.is_succsess != true) {
-                return res.status(500).json(res_data.failed('internal server e', null))
+            if (create_res.is_success != true) {
+                return res.status(500).json(res_data.failed(create_res.message))
             }
             res.status(200).json(res_data.success(address))
         } catch (e) {
@@ -77,17 +73,13 @@ module.exports = {
     deleteAddress: async (req, res, next) => {
         try {
             let id = req.params.id
-            let check_Data = await req.addressUC.getAddressByID(id)
-            if (!check_Data) {
-                return res.status(404).json(res_data.failed('data not found', null))
-            }
             let delete_res = await req.addressUC.deleteAddress(id)
             if (delete_res.is_success !== true) {
                 return res
                     .status(400)
-                    .json(res_data.failed('delete data failed'))
+                    .json(res_data.failed(delete_res.message))
             }
-            res.json(res_data.success('success delete address'))
+            res.json(res_data.success())
         } catch (e) {
             next(e)
         }

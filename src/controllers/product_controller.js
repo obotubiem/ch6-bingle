@@ -69,8 +69,8 @@ module.exports = {
       if (res_product.is_success != true) {
         return res.status(200).json(res_data.success(res_product.message));
       } else res.json(res_data.success(res_product));
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      next(e);
     }
   },
 
@@ -81,8 +81,8 @@ module.exports = {
       if (res_product.is_success != true) {
         return res.status(200).json(res_data.success(res_product.message));
       } else res.json(res_data.success(res_product));
-    } catch (error) {
-      next(error);
+    } catch (e) {
+      next(e);
     }
   },
 };

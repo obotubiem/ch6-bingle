@@ -13,9 +13,7 @@ class CategoryRepository {
         });
       }
     async getProductByCategoryID(id){
-        let data = null
-        try {
-            data = await this.CategoryModel.findOne({
+     return await this.CategoryModel.findOne({
                 where:{id:id},
                 include:[
                     {
@@ -24,65 +22,24 @@ class CategoryRepository {
                 }
                 ]
             })
-        } catch (err) {
-            console.log(err)
-            return null
-        }
-        return data
+       
     }
     async getCategory(){
-        let data = null
-        try {
-            data = await this.CategoryModel.findAll()
-        } catch (err) {
-            console.log(err)
-            return null
-        }
-        return data
-    }
+     return await this.CategoryModel.findAll()
+  }
     async createCategory(category){
-        let is_success = false
-        try {
-            category = await this.CategoryModel.create(category)
-            is_success = true
-        } catch (err) {
-            console.log(err)
-        }
-        return {
-            is_success : is_success,
-            category : category
-        }
+     return await this.CategoryModel.create(category)
+     
     }
     async updateCategory(category, id){
-        let is_success = false
-        try {
-            category = await this.CategoryModel.update(category, {
+        return await this.CategoryModel.update(category, {
                where : {id :id}
             })
-            is_success =true
-        } catch (err) {
-            console.log(err)
-        }
-        return {
-            is_success : is_success,
-            category : category
-        }
     }
     async deleteCategory(id){
-        let is_success = false
-        let category = null
-        try {
-            category = await this.CategoryModel.destroy({
+            return await this.CategoryModel.destroy({
                 where : {id :id}
              })
-            is_success = true
-        } catch (err) {
-            console.log(err)
-        }
-        return {
-            is_success :is_success,
-            category : category
-        }
     }
 
 }

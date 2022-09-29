@@ -59,11 +59,47 @@ class Address {
       address: address,
     };
   }
-  async updateAddress(address, id) {
-    return await this.addressRepository.updateAddress(address, id)
+  async updateAddress(address_data, id) {
+    let is_success = false
+    let address =null
+    let checkExistUser = await this.userRepository.getUserByID(data_address.user_id);
+    if (checkExistUser == null) {
+      return {
+        message: "failed add address, address not found",
+      };
+    }
+    let checkExistAddress = await this.addressRepository.getAddressByID(id);
+    if (checkExistAddress == null) {
+      return {
+        message: "failed add address, address not found",
+      };
+    }
+    
+   address = await this.addressRepository.updateAddress(address_data, id)
+    is_success =true
+    return {
+      is_success : is_success,
+      address : address
+    }
   }
+
+
   async deleteAddress(id) {
-    return await this.addressRepository.deleteAddress(id)
+    let is_success = false
+    let address = null
+    let checkExistAddress = await this.addressRepository.getAddressByID(id);
+    if (checkExistAddress == null) {
+      return {
+        message: "failed add address, address not found",
+      };
+    }
+    address = await this.addressRepository.deleteAddress(id)
+    is_success = true
+    return {
+      is_success : is_success,
+      address : address
+    }
   }
+ 
 }
 module.exports = Address
