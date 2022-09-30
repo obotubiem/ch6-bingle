@@ -30,6 +30,12 @@ class OrderRepository {
     return await this.OrderModel.create(orders);
   }
 
+  async updateOrder (order, id){
+   return await this.OrderModel.create(order ,{
+    where : {id:id}
+   })
+  }
+
 }
 
 module.exports = OrderRepository;
