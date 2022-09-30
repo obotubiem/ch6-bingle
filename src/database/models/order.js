@@ -11,9 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.hasMany(models.OrderDetail, {
+        as: 'order_details',
         foreignKey: { name: 'order_id', allowNull: false }
       })
       this.belongsTo(models.User, {
+        as: 'user',
         foreignKey: { name: 'user_id', allowNull: false }
       })
     }

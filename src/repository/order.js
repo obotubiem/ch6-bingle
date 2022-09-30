@@ -6,31 +6,28 @@ class OrderRepository {
     this.UserModel = User;
     this.OrderDetail = OrderDetail
   }
+
   async getPendingOrderByUserID(user_id) {
-    let order = null
-    order = await this.OrderModel.findOne({
+    return await this.OrderModel.findOne({
       where: {
         user_id: user_id,
         status: order_constants.ORDER_PENDING,
       }, include: [
         {
           model: this.UserModel,
+          as: "user",
           attributes: ['id', 'username']
         },
         {
-          model: this.OrderDetail
+          model: this.OrderDetail,
+          as: "order_details",
         }
       ]
-    });
-    return order
-
+    })
   }
 
   async createOrder(orders) {
-    let order = null
-    order = await this.OrderModel.create(orders);
-    console.log(order)
-    return order
+    return await this.OrderModel.create(orders);
   }
 
 }
