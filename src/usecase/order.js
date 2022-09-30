@@ -43,7 +43,7 @@ class Order {
 
       let qty = item.qty
       let price = product.price
-      let total = (price * qty)
+      let total = price * qty
 
       if (product != null) {
         let detail = {

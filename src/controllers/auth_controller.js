@@ -1,10 +1,9 @@
-const res_data = require('../helper/respons_data')
-const url = require('../libs/handle_Upload')
-const generateToken = require('../helper/jwt')
+const res_data = require("../helper/respons_data");
+const url = require("../libs/handle_Upload");
+const generateToken = require("../helper/jwt");
 
 module.exports = {
   register: async (req, res, next) => {
-
     try {
       let user = {
         firstName: req.body.firstName,
@@ -14,26 +13,25 @@ module.exports = {
         phone: req.body.phone,
         email: req.body.email,
         avatar: null,
-        role_id: 2
-      }
+        role_id: 2,
+      };
       if (req.body.password !== req.body.confrimPassword) {
         return res
           .status(400)
-          .json(res_data.failed("password and confrimPassword not", null))
+          .json(res_data.failed("password and confrimPassword not", null));
       }
 
-      let res_user = await req.userUC.register(user)
+      let res_user = await req.userUC.register(user);
       if (res_user.is_success != true) {
-        return res.status(400).json(res_data.failed(res_user.message))
+        return res.status(400).json(res_data.failed(res_user.message));
       }
-      let avatar = null
+      let avatar = null;
       if (req.file != undefined) {
-        avatar = await url.uploadCloudinary(req.file.path)
+        avatar = await url.uploadCloudinary(req.file.path);
       } else {
-        avatar = process.env.PROFILE_URL
+        avatar = process.env.PROFILE_URL;
       }
-      user.avatar = avatar
-
+      user.avatar = avatar;
 
       res.json(
         res_data.success({
@@ -42,31 +40,31 @@ module.exports = {
           email: user.email,
           phone: user.phone,
           avatar: user.avatar,
-          token: generateToken(res_user.user)
+          token: generateToken(res_user.user.dataValues),
         })
-      )
+      );
     } catch (e) {
-      next(e)
+      next(e);
     }
   },
   login: async (req, res, next) => {
     try {
-      let { username, password } = req.body
+      let { username, password } = req.body;
 
-      let res_user = await req.userUC.login(username, password)
+      let res_user = await req.userUC.login(username, password);
       if (res_user.is_success != true) {
-        res.status(404).json(res_data.failed(res_user.message))
+        res.status(404).json(res_data.failed(res_user.message));
       }
 
-      const user = res_user.user.dataValues
-      const token = generateToken(user)
+      const user = res_user.user.dataValues;
+      const token = generateToken(user);
 
-      res.json(res_data.success({user, token}))
+      res.json(res_data.success({ user, token }));
     } catch (e) {
-      next(e)
+      next(e);
     }
   },
   user: async (req, res, next) => {
-    res.json(res_data.success(req.user))
-  }
-}
+    res.json(res_data.success(req.user));
+  },
+};

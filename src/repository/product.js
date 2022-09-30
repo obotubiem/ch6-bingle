@@ -9,8 +9,6 @@ class ProductRepository {
   }
 
   async getProductByID(id) {
-    
-    try {
       return await this.productModel.findOne({
         where: { id: id },
         include: [
@@ -26,21 +24,10 @@ class ProductRepository {
           },
         ],
       })
-
-    } catch (e) {
-      console.log(e);
     }
-  }
 
   async getProducts(product) {
-    let data = null;
-    try {
-      data = await this.productModel.findAll(product);
-    } catch (err) {
-      console.log(err);
-      return null;
-    }
-    return data;
+      return await this.productModel.findAll(product);
   }
 
   async createProduct(product) {
