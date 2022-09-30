@@ -12,7 +12,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       product_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       qty: {
         type: Sequelize.INTEGER
