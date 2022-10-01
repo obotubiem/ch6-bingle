@@ -16,7 +16,7 @@ class Order {
     //     }
     //   })
     // }
-    order.setDataValue("grandTotal", null);
+    // order.setDataValue("grandTotal", null);
     return order
   }
 
@@ -79,17 +79,17 @@ class Order {
         let total = price * qty;
 
         if (product != null) {
-          let detail = {
+        let detail = {
             order_id,
             product_id: product.id,
             qty,
             price,
             total,
-          };
-          await this.orderDetailRepository.createOrderDetails(detail);
-        }
+        };
+         await this.orderDetailRepository.createOrderDetails(detail);
       }
     }
   }
+}
 }
 module.exports = Order;
