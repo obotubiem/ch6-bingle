@@ -11,10 +11,15 @@ let getToken = (authHeader) => {
 
 module.exports = {
   authorization: (req, res, next) => {
-    const token = req.headers["authorization"]
+    if(typeof req.headers['authorization'] != "string") {
+      return res.status(401).json(res_data.failed("unauthorized", null));}
+
+    const token = getToken (req.headers["authorization"])
+    let payload = null
     try {
-      data = jwt.verify(token, process.env.JWT_KEY_SECRET);
-      req.user = data
+      payload = jwt.verify(token, process.env.JWT_KEY_SECRET);
+      req.user = payload
+      req.role_id = payload.role_id
       next()
     } catch (error) {
       return res.status(401).json(res_data.failed("unauthorized", null));
@@ -22,14 +27,14 @@ module.exports = {
   },
   authentication: {
     admin: (req, res, next) => {
-      if (req.user.role === 1) return next();
-      return next({
-        error: "Unauthorized",
-        authType: "Admin",
-      });
+      if (req.role_id == 1){
+        return res.status(401).json("Unauthorized")
+      } 
+      next()
+      
     },
-    seller: (req, res, next) => {
-      if (req.user.role === 2) return next();
+    customer: (req, res, next) => {
+      if (req.role_id == 2) return next();
       return next({
         error: "Unauthorized",
         authType: "Admin",

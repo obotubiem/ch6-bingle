@@ -8,7 +8,6 @@ module.exports = {
                 stock: 100,
                 sold: 0,
                 description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu varius diam, quis iaculis lorem. Quisque in purus vel quam auctor congue. Curabitur vel pulvinar ipsum, id consequat nulla.",
-                image : null,
                 category_id: 1,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -20,7 +19,6 @@ module.exports = {
                 stock: 100,
                 sold: 0,
                 description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu varius diam, quis iaculis lorem. Quisque in purus vel quam auctor congue. Curabitur vel pulvinar ipsum, id consequat nulla.",
-                image : null,
                 category_id: 1,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -32,7 +30,6 @@ module.exports = {
                 stock: 100,
                 sold: 0,
                 description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu varius diam, quis iaculis lorem. Quisque in purus vel quam auctor congue. Curabitur vel pulvinar ipsum, id consequat nulla.",
-                image : null,
                 category_id: 2,
                 createdAt: new Date(),
                 updatedAt: new Date()
@@ -44,7 +41,6 @@ module.exports = {
                 stock: 100,
                 sold: 0,
                 description:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras eu varius diam, quis iaculis lorem. Quisque in purus vel quam auctor congue. Curabitur vel pulvinar ipsum, id consequat nulla.",
-                image : null,
                 category_id: 2,
                 createdAt: new Date(),
                 updatedAt: new Date()

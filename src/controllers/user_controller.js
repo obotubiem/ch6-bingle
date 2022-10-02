@@ -16,7 +16,7 @@ module.exports = {
       let id = req.params.id;
       let user = await req.userUC.getUserByID(id);
       if (user == null) {
-        return res.status(400).json(res_data.failed("user not found", null));
+        return res.status(404).json(res_data.failed("user not found", null));
       }
       res.status(200).json(res_data.success(user));
     } catch (e) {
@@ -31,7 +31,7 @@ module.exports = {
       let res_update = await req.userUC.updateUser(user, id);
       if (res_update.is_success !== true) {
         return res
-          .status(500)
+          .status(400)
           .json(res_data.failed("internal server error", null));
       }
     } catch (e) {

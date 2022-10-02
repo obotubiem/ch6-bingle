@@ -19,16 +19,15 @@ class Item {
   }
 
   async getProducts(filters) {
-    let product = null;
     let is_success = false;
-    product = await this.productRepository.getProducts(filters);
-    if (product == null) {
+    let products = await this.productRepository.getProducts(filters);
+    if (products.length <= 0) {
       return { message: "product not found" };
     }
     is_success = true;
     return {
       is_success: is_success,
-      product: product,
+      products: products,
     };
   }
 

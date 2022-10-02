@@ -6,6 +6,6 @@ const handleUpload = require('../libs/handle_Upload')
 
 router.post('/register', handleUpload.upload.single('avatar'), authController.register)
 router.post('/login', authController.login)
-router.get('/auth/user', auth.authorization, authController.user)
+router.get('/auth/user', auth.authentication.admin,auth.authorization, authController.user)
 
 module.exports = router

@@ -3,11 +3,13 @@ class Category {
       this.categoryRepository = categoryRepository
    }
    async getCategoryByID(id) {
-      let category = null;
       let is_success = false;
-      category = await this.categoryRepository.getCategoryByID(id);
+      let category = await this.categoryRepository.getCategoryByID(id);
       if (category == null) {
-         return { message: "product not found" };
+         return { 
+            message: "category not found",
+            category: category
+         };
       }
       is_success = true;
       return {
@@ -17,28 +19,34 @@ class Category {
    }
    async getCategory(filters) {
       let is_success = false
-      let category = await this.categoryRepository.getCategory(filters)
-      if (category == null) {
-         return { message: "category not found" }
-      }
+      let category = null
+ 
+       category = await this.categoryRepository.getCategory(filters)
+       if (category.length <= 0) {
+         return { message: "category not found" };
+       }
       is_success = true
-      return category 
+      return {category , is_success}
    }
    async getProductByCategoryID(id) {
-      let is_success = false
-      let category = null
-      category = await this.categoryRepository.getProductByCategoryID(id)
+      let is_success = false   
+     let category = await this.categoryRepository.getProductByCategoryID(id)
       if (category == null) {
-         return { message: "category not found" }
+         return {message : "product not found"}
       }
       is_success = true
-      return category
+      return {
+         is_success: is_success,
+         category: category
+      }
    }
    async createCategory(data_category) {
       let is_success = false;
       let category = await this.categoryRepository.createCategory(data_category);
       if (category == null) {
-         return { message: "somethig went error" };
+         return { message: "somethig went error",
+                  category: category                  
+      };
       }
       is_success = true;
       return {
