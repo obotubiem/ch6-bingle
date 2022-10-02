@@ -18,10 +18,10 @@ class Address {
       address
     }
   }
-  async getAddressByUserID(user_id) {
+  async getAddressByUser(id) {
     let is_success = false
-   
-    let address = await this.addressRepository.getAddressByUserID(user_id)
+    let address = await this.userRepository.getAddressByUserID(id)
+    console.log(address)
     if (address = null) {
       return {
         message: "address not found"
@@ -39,15 +39,13 @@ class Address {
 
   async addNewAddress(data_address) {
     let is_success = false;
-    let address = null;
-
     let checkExistUser = await this.userRepository.getUserByID(data_address.user_id);
     if (checkExistUser == null) {
       return {
         message: "failed add address, address not found",
       };
     }
-    address = await this.addressRepositroy.createAddress(data_address);
+    let address = await this.addressRepository.createAddress(data_address);
     if (address == null) {
       return {
         message: "something went wrong",

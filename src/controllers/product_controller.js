@@ -26,7 +26,7 @@ module.exports = {
           .json(res_data.failed(res_product.message, null));
       }
       res.status(200).
-        json(res_data.success(res_product));
+        json(res_data.success(res_product.product));
     } catch (e) {
       next(e);
     }
