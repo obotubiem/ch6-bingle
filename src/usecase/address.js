@@ -3,35 +3,18 @@ class Address {
     this.addressRepository = addressRepositroy
     this.userRepository = userRepository
   }
-  async getAllAddress() {
+  async getAddressByUserID(user_id) {
     let is_success = false
-    let address = null
-    address = await this.addressRepository.getAllAddress()
-    if (address == null) {
-      return {
-        message: 'address not added'
-      }
+    let address = await this.addressRepository.getAddressByUserID(user_id)
+    if (address.length <= 0) {
+      return { message: "address not found" }
     }
     is_success = true
     return {
-      is_success,
-      address
+      is_success: is_success,
+      address: address
     }
-  }
-  async getAddressByUser(id) {
-    let is_success = false
-    let address = await this.userRepository.getAddressByUserID(id)
-    console.log(address)
-    if (address = null) {
-      return {
-        message: "address not found"
-      }
-    }
-    is_success = true
-    return {
-      address: address,
-      is_success: is_success
-    }
+
   }
   async getAddress(filters) {
     return await this.addressRepository.getAddress(filters)
@@ -59,8 +42,8 @@ class Address {
   }
   async updateAddress(address_data, id) {
     let is_success = false
-    let address =null
-    let checkExistUser = await this.userRepository.getUserByID(data_address.user_id);
+    let address = null
+    let checkExistUser = await this.userRepository.getUserByID(address_data.user_id);
     if (checkExistUser == null) {
       return {
         message: "failed add address, address not found",
@@ -72,16 +55,13 @@ class Address {
         message: "failed add address, address not found",
       };
     }
-    
-   address = await this.addressRepository.updateAddress(address_data, id)
-    is_success =true
+    address = await this.addressRepository.updateAddress(address_data, id)
+    is_success = true
     return {
-      is_success : is_success,
-      address : address
+      is_success: is_success,
+      address: address
     }
   }
-
-
   async deleteAddress(id) {
     let is_success = false
     let address = null
@@ -94,10 +74,10 @@ class Address {
     address = await this.addressRepository.deleteAddress(id)
     is_success = true
     return {
-      is_success : is_success,
-      address : address
+      is_success: is_success,
+      address: address
     }
   }
- 
+
 }
 module.exports = Address

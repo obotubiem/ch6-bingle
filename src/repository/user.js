@@ -17,18 +17,6 @@ class UserRepository {
       ],
     });
   }
-  async getAddressByUserID(id) {
-    return await this.UserModel.findOne({
-      where: { id: id },
-      include: [
-        {
-          model: this.AddressModel,
-        },
-      ],
-    });
-  }
-  
-
   async getUserByUsername(username) {
     return await this.UserModel.findOne({
       where: { username: username },
