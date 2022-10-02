@@ -13,11 +13,6 @@ class ProductRepository {
         where: { id: id },
         include: [
           {
-            model: this.categoryModel,
-            as: "category",
-            attributes: ["name"],
-          },
-          {
             model: this.imageProductModel,
             as: 'image_products',
             attributes: ["url"],

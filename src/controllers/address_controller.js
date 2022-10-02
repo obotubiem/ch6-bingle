@@ -6,7 +6,7 @@ module.exports = {
     try {
       let user_id = req.params.user_id
       let res_address = await req.addressUC.getAddressByUserID(user_id);
-      if (res_address === null) {
+      if (res_address == null) {
         return res
           .status(404)
           .json(res_data.failed(res_address.message, null));

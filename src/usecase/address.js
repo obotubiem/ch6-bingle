@@ -6,7 +6,7 @@ class Address {
   async getAddressByUserID(user_id) {
     let is_success = false
     let address = await this.addressRepository.getAddressByUserID(user_id)
-    if (address.length <= 0) {
+    if (address.length < 0) {
       return { message: "address not found" }
     }
     is_success = true
