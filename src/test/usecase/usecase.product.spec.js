@@ -22,7 +22,7 @@ describe('product', () => {
             mockCategoryRepo(categoryValues)
         )
     })
-    
+
     describe('get Product By ID', () => {
         test("is_success = true", async () => {
             let res = await productUC.getProductByID()
@@ -132,20 +132,20 @@ describe('product', () => {
 
     describe('Update Product', () => {
         test('is_success = true', async () => {
-            let res = await productUC.updateProduct("123e4567-e89b-12d3-a456-111114174123",{
+            let res = await productUC.updateProduct("123e4567-e89b-12d3-a456-111114174123", {
                 name: "Celaja Jeans",
                 category_id: 1,
-                })
+            })
             expect(res.is_success).toBeTruthy()
 
         })
         test('is_success = false ', async () => {
             productValues.returnUpdateProduct = null
             productUC = new productUseCase(mockProductRepo(productValues), mockCategoryRepo(categoryValues))
-            let res = await productUC.updateProduct("123e4567-e89b-12d3-a456-111114174123",{
+            let res = await productUC.updateProduct("123e4567-e89b-12d3-a456-111114174123", {
                 name: "Celaja Jeans",
                 category_id: 1,
-                })
+            })
             expect(res.is_success).toBeFalsy()
             expect(res.message).toEqual("something went wrong")
         })
@@ -154,10 +154,10 @@ describe('product', () => {
             productUC = new productUseCase(
                 mockProductRepo(productValues),
                 mockCategoryRepo(categoryValues))
-                let res = await productUC.updateProduct("123e4567-e89b-12d3-a456-111114174123",{
-                    name: "Celaja Jeans",
-                    category_id: 1,
-                    })
+            let res = await productUC.updateProduct("123e4567-e89b-12d3-a456-111114174123", {
+                name: "Celaja Jeans",
+                category_id: 1,
+            })
             expect(res.is_success).toBeFalsy()
             expect(res.message).toEqual("failed add product, category not found")
         })
