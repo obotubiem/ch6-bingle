@@ -48,12 +48,10 @@ const mockProductRepo = (
         }
     )
     repo.updateProduct = jest.fn().mockReturnValue(
-        returnUpdateProduct !== true ? returnUpdateProduct : {
-        }
+        returnUpdateProduct !== true ? returnUpdateProduct : true
     )
     repo.deleteProduct = jest.fn().mockReturnValue(
-        returnDeleteProduct !== true ? returnDeleteProduct : {
-        }
+        returnDeleteProduct !== true ? returnDeleteProduct : true
     )
     return repo
 }

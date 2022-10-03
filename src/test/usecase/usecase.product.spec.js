@@ -22,6 +22,7 @@ describe('product', () => {
             mockCategoryRepo(categoryValues)
         )
     })
+    
     describe('get Product By ID', () => {
         test("is_success = true", async () => {
             let res = await productUC.getProductByID()
@@ -103,6 +104,7 @@ describe('product', () => {
             expect(res.message).toEqual("failed add product, category not found")
         })
     })
+
     describe('deleteProduct', () => {
         test('is_success = true', async () => {
             let res = await productUC.deleteProduct("123e4567-e89b-12d3-a456-111114174123")
@@ -127,6 +129,7 @@ describe('product', () => {
             expect(res.message).toEqual("failed delete product, product not found")
         })
     })
+
     describe('Update Product', () => {
         test('is_success = true', async () => {
             let res = await productUC.updateProduct("123e4567-e89b-12d3-a456-111114174123",{
