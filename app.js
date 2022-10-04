@@ -8,6 +8,9 @@ app.use(express.urlencoded({ extended: false }))
 const ProductRepository = require("./src/repository/product")
 const ItemUseCase = require("./src/usecase/product")
 
+const ProductImageRepository = require("./src/repository/image_product")
+const ProductImageUseCase = require("./src/usecase/product_image")
+
 const CategoryRepository = require("./src/repository/category")
 const CategoryUseCase = require("./src/usecase/category")
 
@@ -35,6 +38,12 @@ const itemUC = new ItemUseCase(
     new ProductRepository(),
     new CategoryRepository()
 )
+
+const productImageUC = new ProductImageUseCase(
+    new ProductImageRepository(),
+    new ProductRepository()
+)
+
 const orderUC = new OrderUseCase(
     new OrderRepository(),
     new OrderDetailRepository(),
@@ -43,6 +52,7 @@ const orderUC = new OrderUseCase(
 
 app.use((req, res, next) => {
     req.itemUC = itemUC
+    req.productImageUC = productImageUC
     req.categoryUC = categoryUC
     req.userUC = userUC
     req.addressUC = addressUC
