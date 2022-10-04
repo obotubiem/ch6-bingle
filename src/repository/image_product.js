@@ -9,7 +9,7 @@ class productImageRepository {
             where: { product_id: product_id }
         })
     }
-    async getImageProducByID(id) {
+    async getImageProductByID(id) {
         return await this.productImageRepository.findOne({
             where: { id: id }
         })
@@ -23,7 +23,7 @@ class productImageRepository {
         })
     }
     async deleteImageProduct(id) {
-        return await this.productImageRepository.delete({
+        return await this.productImageRepository.destroy({
             where: { id: id }
         })
     }

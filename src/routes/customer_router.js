@@ -23,6 +23,7 @@ router.get('/product/:id', product_controller.getOneProduct)
 router.get('/image/product/:product_id', imageProduct_controller.getImageProductByProductID)
 router.get('/image/:id', imageProduct_controller.getImageProductByID)
 
+
 // category
 router.get('/category',category_controller.getAllCategory)
 router.get('/category/product/:id',category_controller.getProductByCategory)

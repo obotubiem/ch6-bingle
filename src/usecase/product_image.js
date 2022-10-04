@@ -5,14 +5,14 @@ class ProductImageUC {
   }
   async getImageProductByProductID(product_id) {
     let is_success = false;
-    let product = await this.productRepository.getProductByID(product_id)
-    if(product == null){
-        return {message:"product not found"}
+    let product = await this.productRepository.getProductByID(product_id);
+    if (product == null) {
+      return { message: "product not found" };
     }
     let image = await this.productImageRepository.getAllImageByProductID(
       product_id
     );
-   
+
     is_success = true;
     return {
       is_success,
@@ -21,7 +21,7 @@ class ProductImageUC {
   }
   async getImageProductByID(image_id) {
     let is_success = false;
-    let image = await this.productImageRepository.getImageProducByID(image_id);
+    let image = await this.productImageRepository.getImageProductByID(image_id);
     if (image == null) {
       return { message: "image not found" };
     }
@@ -39,7 +39,7 @@ class ProductImageUC {
     if (product == null) {
       return { message: "failed add image, Product not found" };
     }
-    image = await this.productRepository.createImageProduct(data);
+    image = await this.productImageRepository.createImageProduct(data);
     if (image == null) {
       return { message: "something went wrong" };
     }
@@ -49,13 +49,13 @@ class ProductImageUC {
       image,
     };
   }
-  async UpdateImageProduct(oldImage, id) {
+  async updateImageProduct(oldImage, id) {
     let is_success = false;
     let image = await this.getImageProductByID(id);
     if (image == null) {
       return { message: "product image not found" };
     }
-    let newImage = await this.productImageRepository.UpdateImageProduct(
+    let newImage = await this.productImageRepository.updateImageProduct(
       oldImage,
       id
     );
@@ -70,16 +70,14 @@ class ProductImageUC {
   }
   async deleteImageProduct(id) {
     let is_success = false;
+    let image = null;
     let imageExist = await this.productImageRepository.getImageProductByID(id);
     if (imageExist == null) {
       return { message: "product image not found" };
     }
-    let image = await this.productImageRepository.deleteImageProduct(id);
-    if (image == null) {
-      return { message: "something went wrong" };
-    }
+    image = await this.productImageRepository.deleteImageProduct(id);
     is_success = true;
-    return is_success;
+    return { is_success: is_success };
   }
 }
 
