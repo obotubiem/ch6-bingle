@@ -29,7 +29,7 @@ module.exports = {
   },
   editUser: async (req, res, next) => {
     try {
-      let id = req.params.id;
+      let id = req.user.id
       let user = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,

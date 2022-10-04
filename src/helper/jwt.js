@@ -4,24 +4,19 @@ function generate_access_token(data) {
     id : data.id,
     username : data.username,
     email :data.email,
-
+    role_id : data.role_id
    }
-    let payload = {
-        user : user,
-        role_id : data.role_id
-    }
-    const jwt_str = jwt.sign(
-        payload,
+  
+    const accessToken = jwt.sign(
+        user,
         process.env.JWT_KEY_SECRET,
         {
             expiresIn: '6h'
         }
     )
 
-    return {
-        user:user,
-        accessToken : jwt_str
-    }
+    return accessToken
+    
 }
 
 module.exports = generate_access_token

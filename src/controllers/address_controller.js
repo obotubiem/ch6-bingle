@@ -4,7 +4,7 @@ module.exports = {
 
   getAddressByUserID: async (req, res, next) => {
     try {
-      let user_id = req.params.user_id
+      let user_id = req.user.id
       let res_address = await req.addressUC.getAddressByUserID(user_id);
       if (res_address == null) {
         return res
@@ -19,12 +19,12 @@ module.exports = {
   addAddress: async (req, res, next) => {
     try {
       let address = {
-        province,
-        city,
-        postal_code,
-        detail_address,
-        user_id
-      } = req.body
+        province :req.body.province,
+        city :req.body.city,
+        postal_code:req.body.postal_code,
+        detail_address:req.body.detail_address,
+        user_id :req.user.id
+      } 
 
       let create_res = await req.addressUC.addNewAddress(address);
       if (create_res.is_success != true) {
@@ -42,12 +42,12 @@ module.exports = {
     let id = req.params.id;
     try {
       let address = {
-        province,
-        city,
-        postal_code,
-        detail_address,
-        user_id
-      } = req.body
+        province :req.body.province,
+        city :req.body.city,
+        postal_code:req.body.postal_code,
+        detail_address:req.body.detail_address,
+        user_id :req.user.id
+      } 
 
       let res_update = await req.addressUC.updateAddress(address, id);
       if (res_update.is_success != true) {
