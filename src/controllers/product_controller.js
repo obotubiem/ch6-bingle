@@ -41,7 +41,6 @@ module.exports = {
         sold: req.body.sold,
         description: req.body.description,
         category_id: req.body.category_id,
-        image: null,
       };
 
       let res_product = await req.itemUC.addNewProduct(product);
@@ -63,7 +62,6 @@ module.exports = {
         stock: req.body.stock,
         sold: req.body.sold,
         description: req.body.description,
-        image: null,
         category_id: req.body.category_id,
       };
 

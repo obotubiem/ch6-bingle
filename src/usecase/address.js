@@ -6,7 +6,7 @@ class Address {
   async getAddressByUserID(user_id) {
     let is_success = false
     let address = await this.addressRepository.getAddressByUserID(user_id)
-    if (address.length < 0) {
+    if (address == null) {
       return { message: "address not found" }
     }
     is_success = true
@@ -46,7 +46,7 @@ class Address {
     let checkExistUser = await this.userRepository.getUserByID(address_data.user_id);
     if (checkExistUser == null) {
       return {
-        message: "failed add address, address not found",
+        message: "failed add address, user not found",
       };
     }
     let checkExistAddress = await this.addressRepository.getAddressByID(id);

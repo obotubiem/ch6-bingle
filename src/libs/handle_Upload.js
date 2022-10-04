@@ -42,11 +42,19 @@ cloudinary.config({
 })
 
 
-async function uploadCloudinary(filePath){
+
+async function uploadCloudinaryProduct(filePath, folder){
+    if(typeof folder != "string") {
+        folder = 'product'
+    }
+    if(folder === "") {
+        folder = 'product'
+    }
     let result
     try {
         result = await cloudinary.uploader.upload(filePath, {
-            use_filename: true
+            use_filename: true,
+            folder
         })
         fs.unlinkSync(filePath)
         return result.url
@@ -56,5 +64,26 @@ async function uploadCloudinary(filePath){
     }
 }
 
+    async function uploadCloudinaryAvatar(filePath, folder){
+        if(typeof folder != "string") {
+            folder = 'avatar'
+        }
+        if(folder === "") {
+            folder = 'avatar'
+        }
+        let result
+        try {
+            result = await cloudinary.uploader.upload(filePath, {
+                use_filename: true,
+                folder
+            })
+            fs.unlinkSync(filePath)
+            return result.url
+        } catch (error) {
+            fs.unlinkSync(filePath)
+            return null
+        }
+}
 
-module.exports= {upload, uploadCloudinary}
+
+module.exports= {upload, uploadCloudinaryAvatar, uploadCloudinaryProduct}

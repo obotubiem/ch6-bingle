@@ -27,41 +27,48 @@ class Order {
       status: order_constants.ORDER_PENDING,
     };
     let order = null;
-    order = await this.orderRepository.getPendingOrderByUserID(user_id);
-    if (order == null) {
-      await this.orderRepository.createOrder(data_order);
-    }
-    await this.orderRepository.updateOrder(data_order, {
-      where: { id: order.id },
-    });
-    for (let i = 0; i < items.length; i++) {
-      let product = await this.productRepository.getProductByID(items[i].id);
-      if (product != null) {
-        let existDetail = await this.orderDetailRepository.getByOrderAndProduct(
-          order_id,
-          product.id
-        );
-        if (existDetail != null) {
-          await existDetail.set({
-            qty,
-            price,
-            total,
-          });
+    let checkStock = await this.validateStock(items)
+
+    if (checkStock.is_success) {
+      order = await this.orderRepository.getPendingOrderByUserID(user_id);
+      if (order == null) {
+        await this.orderRepository.createOrder(data_order);
+      }
+      await this.orderRepository.updateOrder(data_order, {
+        where: { id: order.id },
+      });
+      for (let i = 0; i < items.length; i++) {
+        let product = await this.productRepository.getProductByID(items[i].id);
+        if (product != null) {
+          let existDetail = await this.orderDetailRepository.getByOrderAndProduct(
+            order_id,
+            product.id
+          );
+          if (existDetail != null) {
+            await existDetail.set({
+              qty,
+              price,
+              total,
+            });
+          } else {
+            let detailOrderData = items[i];
+            (detailOrderData.product_id = product.id),
+              (detailOrderData.price = product.price),
+              (detailOrderData.order_id = order.id);
+
+            delete detailOrderData.id;
+
+            await this.orderDetailRepository.createOrderDetails(detail);
+            is_success = true;
+          }
         } else {
-          let detailOrderData = items[i];
-          (detailOrderData.product_id = product.id),
-            (detailOrderData.price = product.price),
-            (detailOrderData.order_id = order.id);
-
-          delete detailOrderData.id;
-
-          await this.orderDetailRepository.createOrderDetails(detail);
-          is_success = true;
-          return {
-            is_success,
-            order,
-          };
+          is_success = false;
+          message = checkStock.message
         }
+        return {
+          is_success,
+          order,
+        };
       }
     }
   }
@@ -79,17 +86,36 @@ class Order {
         let total = price * qty;
 
         if (product != null) {
-        let detail = {
+          let detail = {
             order_id,
             product_id: product.id,
             qty,
             price,
             total,
-        };
-         await this.orderDetailRepository.createOrderDetails(detail);
+          };
+          await this.orderDetailRepository.createOrderDetails(detail);
+        }
       }
     }
   }
-}
+  async validateStock(items) {
+    let is_success = true
+
+    for (let i = 0; i < items.length; i++) {
+      let product = await this.productRepository.getProductByID(items[i].id)
+      let qty = items[i].qty
+      let stock = product.stock
+
+      if (qty > stock) {
+        is_success = false
+        return { message: `stock ${product.name} kurang dari ${qty}` }
+      }
+    }
+    return {
+      is_success,
+      message
+    }
+  }
+
 }
 module.exports = Order;

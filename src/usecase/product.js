@@ -21,7 +21,7 @@ class Item {
   async getProducts(filters) {
     let is_success = false;
     let products = await this.productRepository.getProducts(filters);
-    if (products.length <= 0) {
+    if (products === null) {
       return { message: "product not found" };
     }
     is_success = true;

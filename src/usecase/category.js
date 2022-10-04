@@ -22,7 +22,7 @@ class Category {
       let category = null
  
        category = await this.categoryRepository.getCategory(filters)
-       if (category.length <= 0) {
+       if (category == null) {
          return { message: "category not found" };
        }
       is_success = true

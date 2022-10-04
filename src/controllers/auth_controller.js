@@ -27,7 +27,7 @@ module.exports = {
       }
       let avatar = null;
       if (req.file != undefined) {
-        avatar = await url.uploadCloudinary(req.file.path);
+        avatar = await url.uploadCloudinaryAvatar(req.file.path);
       } else {
         avatar = process.env.PROFILE_URL;
       }
