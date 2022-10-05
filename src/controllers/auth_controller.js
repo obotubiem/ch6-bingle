@@ -58,7 +58,7 @@ module.exports = {
       res.json({
         status: 'ok',
         message: 'success',
-        token: generateToken(res_user.user)
+        data: generateToken(res_user.user)
       });
     } catch (e) {
       next(e);

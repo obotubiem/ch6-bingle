@@ -100,7 +100,7 @@ class Order {
   }
   async validateStock(items) {
     let is_success = true
-
+    let message = ''
     for (let i = 0; i < items.length; i++) {
       let product = await this.productRepository.getProductByID(items[i].id)
       let qty = items[i].qty
@@ -113,7 +113,7 @@ class Order {
     }
     return {
       is_success,
-      message
+      message 
     }
   }
 

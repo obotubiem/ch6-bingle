@@ -15,7 +15,7 @@ function generate_access_token(data) {
         }
     )
 
-    return accessToken
+    return {user, accessToken}
     
 }
 
