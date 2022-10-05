@@ -1,132 +1,70 @@
-const { User } = require("../database/models")
-const { Address } = require('../database/models')
-const bcrypt = require("bcrypt")
+const { User } = require("../database/models");
+const { Address } = require("../database/models");
+const bcrypt = require("bcrypt");
 
 class UserRepository {
-    constructor() {
-        this.UserModel = User
-        this.AddressModel = Address
+  constructor() {
+    this.UserModel = User;
+    this.AddressModel = Address;
+  }
+  async getAllUser() {
+    return await this.UserModel.findAll({
+      attributes: { exclude: ["password"] },
+      include: [
+        {
+          model: this.AddressModel,
+        },
+      ],
+    });
+  }
+
+  async getUserByUsername(username) {
+    return await this.UserModel.findOne({
+      where: { username: username },
+    });
+  }
+
+  async getUserByEmail(email) {
+    return await this.UserModel.findOne({
+      where: { email: email },
+    });
+  }
+
+  async getUserByPhone(phone) {
+    return await this.UserModel.findOne({
+      where: { phone: phone },
+    });
+  }
+
+  async getUserByID(id) {
+    return await this.UserModel.findOne({
+      where: { id: id },
+    });
+  }
+
+  async updateUser(user, id) {
+    return await this.UserModel.update(user, {
+      where: { id: id },
+    });
+  }
+
+  async registerUser(user_data) {
+    user_data.password = bcrypt.hashSync(user_data.password, 10);
+    user_data.is_admin = false;
+    return await this.UserModel.create(user_data);
+  }
+
+  async loginUser(username, password) {
+    let user = null;
+    user = await this.getUserByUsername(username);
+    if (user === null) {
+      return user;
     }
-    async getAllUser() {
-        let user = null
-        try {
-            user = await this.UserModel.findAll({
-                attributes: { exclude: ['password'] },
-                include: [
-                    {
-                        model: this.AddressModel
-                    }],
-
-            })
-        } catch (error) {
-            console.log(error)
-        }
-        return user
+    if (!bcrypt.compareSync(password, user.password)) {
+      return null;
     }
-
-    async getUserByUsername(username) {
-        let user = null
-        try {
-            user = await this.UserModel.findOne({
-                where: { username: username },
-                attributes: {
-                    exclude: ['password']
-                }
-            })
-        } catch (error) {
-            console.log(error)
-        }
-        return user
-    }
-
-    async getUserByEmail(email) {
-        let user = null
-        try {
-            user = await this.UserModel.findOne({
-                where: { email: email }
-
-            })
-        } catch (error) {
-            console.log(error)
-        }
-        return user
-    }
-
-    async getUserByPhone(phone) {
-        let user = null
-        try {
-            user = await this.UserModel.findOne({
-                where: { phone: phone }
-
-            })
-        } catch (error) {
-            console.log(error)
-        }
-        return user
-    }
-
-
-    async getUserByID(id) {
-        let user = null
-        try {
-            user = await this.UserModel.findOne({
-                where: { id: id }
-            })
-        } catch (error) {
-            console.log(error)
-        }
-        return user
-    }
-
-    async updateUser(user, id) {
-        let is_success = false
-        try {
-            user = await this.UserModel.update(user, {
-                where: { id: id }
-            })
-            is_success = true
-        } catch (error) {
-            console(error)
-        }
-        return {
-            is_success: is_success,
-            user: user
-        }
-    }
-
-    async registerUser(user_data) {
-        user_data.password = bcrypt.hashSync(user_data.password, 10)
-        user_data.is_admin = false
-
-        let user = null
-        try {
-            user = await this.UserModel.create(user_data)
-        } catch (e) {
-            console.error(e)
-            return null
-        }
-
-        return user
-    }
-
-    async loginUser(username, password) {
-        let user = null
-        try {
-            user = await this.getUserByUsername(username)
-            if (user !== null) {
-                return user
-            }
-        } catch (e) {
-            console.log(e)
-            return null
-        }
-
-        if (!bcrypt.compareSync(password, user.password)) {
-            return null
-        }
-
-        return user
-    }
+    return user;
+  }
 }
 
-module.exports = UserRepository
+module.exports = UserRepository;

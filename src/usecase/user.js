@@ -12,11 +12,7 @@ class User {
   async updateUser(user, id) {
     return await this.userRepository.getUserByID(user, id);
   }
-
-  async createUser(user) {
-    return await this.userRepository.createUser(user);
-  }
-
+  
   async register(user_data) {
     let is_success = false;
     let user = null;
