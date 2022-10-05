@@ -28,8 +28,10 @@ class UserRepository {
         let user = null
         try {
             user = await this.UserModel.findOne({
-                where: { username: username }
-
+                where: { username: username },
+                attributes: {
+                    exclude: ['password']
+                }
             })
         } catch (error) {
             console.log(error)
@@ -49,6 +51,7 @@ class UserRepository {
         }
         return user
     }
+
     async getUserByPhone(phone) {
         let user = null
         try {
@@ -74,6 +77,7 @@ class UserRepository {
         }
         return user
     }
+
     async updateUser(user, id) {
         let is_success = false
         try {
@@ -109,16 +113,18 @@ class UserRepository {
         let user = null
         try {
             user = await this.getUserByUsername(username)
-            if (user === null) {
+            if (user !== null) {
                 return user
             }
         } catch (e) {
             console.log(e)
             return null
         }
+
         if (!bcrypt.compareSync(password, user.password)) {
             return null
         }
+
         return user
     }
 }

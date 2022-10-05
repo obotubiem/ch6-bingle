@@ -45,8 +45,7 @@ class User {
 
   async login(username, password) {
     let is_success = false
-    let user = null
-    user = await this.userRepository.loginUser(username, password)
+    let user = await this.userRepository.loginUser(username, password)
     if (user == null) {
       return { message: "incorect username or password" };
     }
