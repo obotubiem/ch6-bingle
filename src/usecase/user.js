@@ -3,16 +3,18 @@ class User {
     this.userRepository = userRepository;
   }
   async getAllUser() {
-    let is_success = false
+    let result = {
+      is_success : false,
+      reason : null,
+      data : []
+    }
     let user = await this.userRepository.getAllUser();
     if (user == null) {
-      return { message: "user not found" }
+      return result.reason = "list empty"
     }
-    is_success = true
-    return {
-      is_success: is_success,
-      user: user
-    }
+    result.is_success = true
+    result.data = user
+    return result
   }
   async getUserByID(id) {
     let is_success = false

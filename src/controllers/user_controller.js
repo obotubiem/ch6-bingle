@@ -7,8 +7,9 @@ module.exports = {
       if (res_user == null) {
         return res
         .status(404)
-        .json(res_data.failed(res_user, null));
-      } else res.json(res_data.success(res_user.user));
+        .json(res_data.failed(res_user.reason, res_user.data));
+      } 
+       res.json(res_data.success(res_user.data));
     } catch (e) {
       next(e);
     }
@@ -22,7 +23,7 @@ module.exports = {
         .status(404)
         .json(res_data.failed(res_user.message, null));
       }
-      res.status(200).json(res_data.success(res_user.user));
+      res.status(200).json(res_data.success(res_user.result));
     } catch (e) {
       next(e);
     }

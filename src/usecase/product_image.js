@@ -70,12 +70,18 @@ class ProductImageUC {
   }
   async deleteImageProduct(id) {
     let is_success = false;
-    let image = null;
+   let image = null
     let imageExist = await this.productImageRepository.getImageProductByID(id);
     if (imageExist == null) {
       return { message: "product image not found" };
     }
     image = await this.productImageRepository.deleteImageProduct(id);
+    let defaultImage = {
+      url : process.env.ITEM_URL,
+      product_id : imageExist.product_id
+    }
+    await this.createImageProduct(defaultImage)
+    
     is_success = true;
     return { is_success: is_success };
   }
