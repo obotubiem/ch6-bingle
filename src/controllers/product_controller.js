@@ -2,6 +2,35 @@ const res_data = require("../helper/respons_data");
 const { v4: uuidv4 } = require("uuid");
 
 module.exports = {
+  getAllProduct: async (req, res, next) => {
+    try {
+      let res_product = await req.itemUC.getProducts();
+      if (res_product.is_success !== true) {
+        return res
+          .status(404)
+          .json(res_data.failed(res_product.message, null));
+      }
+      res.status(200).
+        json(res_data.success(res_product.products));
+    } catch (e) {
+      next(e);
+    }
+  },
+  getOneProduct: async (req, res, next) => {
+    let id = req.params.id;
+    try {
+      let res_product = await req.itemUC.getProductByID(id);
+      if (res_product.is_success != true) {
+        return res
+          .status(404)
+          .json(res_data.failed(res_product.message, null));
+      }
+      res.status(200).
+        json(res_data.success(res_product.product));
+    } catch (e) {
+      next(e);
+    }
+  },
   addProduct: async (req, res, next) => {
     try {
       let product = {
@@ -12,7 +41,6 @@ module.exports = {
         sold: req.body.sold,
         description: req.body.description,
         category_id: req.body.category_id,
-        image: null,
       };
 
       let res_product = await req.itemUC.addNewProduct(product);
@@ -25,7 +53,6 @@ module.exports = {
       next(e);
     }
   },
-
   editProduct: async (req, res, next) => {
     try {
       let id = req.params.id;
@@ -35,7 +62,6 @@ module.exports = {
         stock: req.body.stock,
         sold: req.body.sold,
         description: req.body.description,
-        image: null,
         category_id: req.body.category_id,
       };
 
@@ -48,7 +74,6 @@ module.exports = {
       next(e);
     }
   },
-
   deleteProduct: async (req, res, next) => {
     try {
       let id = req.params.id;
@@ -58,29 +83,6 @@ module.exports = {
         return res.status(400).json(res_data.failed(delete_res.message));
       }
       res.json(res_data.success());
-    } catch (e) {
-      next(e);
-    }
-  },
-
-  getAllProduct: async (req, res, next) => {
-    try {
-      let res_product = await req.itemUC.getProducts();
-      if (res_product.is_success != true) {
-        return res.status(200).json(res_data.success(res_product.message));
-      } else res.json(res_data.success(res_product));
-    } catch (e) {
-      next(e);
-    }
-  },
-
-  getOneProduct: async (req, res, next) => {
-    let id = req.params.id;
-    try {
-      let res_product = await req.itemUC.getProductByID(id);
-      if (res_product.is_success != true) {
-        return res.status(200).json(res_data.success(res_product.message));
-      } else res.json(res_data.success(res_product));
     } catch (e) {
       next(e);
     }

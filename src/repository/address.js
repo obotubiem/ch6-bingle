@@ -10,25 +10,27 @@ class AddressRepository {
       include: [
         {
           model: this.UserModel,
+          attributes: { exclude: ["password", "role_id", "avatar"] }
         },
       ],
     });
   }
   async getAddressByUserID(user_id) {
     return await this.AddressModel.findAll({
-      where: { user_id: user_id },
-    });
-  } 
+      where : {user_id : user_id}
+     });
+   }
    async getAddressByID(id) {
     return await this.AddressModel.findOne({
       where: { id:id },
+      
     });
   }
   async createAddress(address) {
     return await this.AddressModel.create(address);
   }
   async updateAddress(address, id) {
-  return await this.AddresModel.update(address, {
+  return await this.AddressModel.update(address, {
       where: { id: id },
     });
   }

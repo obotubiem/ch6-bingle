@@ -27,7 +27,7 @@ module.exports = {
       }
       let avatar = null;
       if (req.file != undefined) {
-        avatar = await url.uploadCloudinary(req.file.path);
+        avatar = await url.uploadCloudinaryAvatar(req.file.path);
       } else {
         avatar = process.env.PROFILE_URL;
       }
@@ -55,11 +55,11 @@ module.exports = {
       if (res_user.is_success != true) {
         res.status(404).json(res_data.failed(res_user.message));
       }
-
-      const user = res_user.user.dataValues;
-      const token = generateToken(user);
-
-      res.json(res_data.success({ user, token }));
+      res.json({
+        status: 'ok',
+        message: 'success',
+        token: generateToken(res_user.user)
+      });
     } catch (e) {
       next(e);
     }

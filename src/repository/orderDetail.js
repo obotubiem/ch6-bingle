@@ -25,6 +25,14 @@ class OrderDetailRepository {
             }
         })
     }
+    async updateOrderDetail (order, id){
+        return await this.OrderDetailRepository.update({
+            where: {
+                order_id: order_id,
+                product_id: product_id,
+            }
+        })
+    }
 }
 
 module.exports = OrderDetailRepository

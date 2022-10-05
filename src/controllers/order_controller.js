@@ -1,7 +1,7 @@
 const res_data = require("../helper/respons_data");
 module.exports = {
   getOrder: async (req, res, next) => {
-    let userId = req.params.id;
+    let userId = req.user.id;
     try {
       const order = await req.orderUC.getOrder(userId);
       if (order === null) {
@@ -14,7 +14,7 @@ module.exports = {
   },
 
   createOrder: async (req, res, next) => {
-    let userId = req.params.id
+    let userId = req.user.id
     let items = req.body.items
     let order = await req.orderUC.getOrder(userId)
 
