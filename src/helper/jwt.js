@@ -4,7 +4,8 @@ function generate_access_token(data) {
     id : data.id,
     username : data.username,
     email :data.email,
-    role_id : data.role_id
+    role_id : data.role_id,
+    token : null
    }
   
     const accessToken = jwt.sign(
@@ -13,9 +14,10 @@ function generate_access_token(data) {
         {
             expiresIn: '6h'
         }
+        
     )
-
-    return {user, accessToken}
+        user.token = accessToken
+    return user
     
 }
 
