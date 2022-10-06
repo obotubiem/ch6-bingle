@@ -23,7 +23,7 @@ module.exports = {
         .status(404)
         .json(res_data.failed(res_user.message, null));
       }
-      res.status(200).json(res_data.success(res_user.result));
+      res.status(200).json(res_data.success(res_user.data));
     } catch (e) {
       next(e);
     }
@@ -42,10 +42,10 @@ module.exports = {
       let res_update = await req.userUC.updateUser(user, id);
       if (res_update.is_success !== true) {
         return res
-          .status(400)
-          .json(res_data.failed(res_update.message, null));
+          .status(res_update.status)
+          .json(res_data.failed(res_update.reason, null));
       }
-      res.status(200).json(res_data.success());
+      res.status(res_update.status).json(res_data.success());
     } catch (e) {
       next(e);
     }
