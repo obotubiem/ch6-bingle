@@ -28,15 +28,15 @@ describe('address', () => {
             expect(res.is_success).toBeTruthy()
             expect(res.data === null).toEqual(false)
         })
-        test('is_succes = false', async () => {
-            addressValues.returnGetAddressByUserID = null
+        test('is_success = false', async () => {
+            addressValues.returnGetAddressByUserID = []
             addressUC = new addressUseCase(
                 mockAddressRepo(addressValues),
                 mockUserRepo(userValues)
             )
-            let res = await addressUC.getAddressByUserID(2)
-            expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("address not found")
+            let res = await addressUC.getAddressByUserID()
+            expect(res.is_success).toBeTruthy()
+            expect(res.data).toEqual([])
         })
     })
     describe('create address', () => {
@@ -69,7 +69,7 @@ describe('address', () => {
                 }
             )
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("failed add address, address not found")
+            expect(res.reason).toEqual("failed add address, address not found")
         })
         test('is_success = false server error', async () => {
             addressValues.returnCreateAddress = null
@@ -87,7 +87,7 @@ describe('address', () => {
                 }
             )
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("something went wrong")
+            expect(res.reason).toEqual("something went wrong")
         })
     })
     describe('Update address', () => {
@@ -120,7 +120,7 @@ describe('address', () => {
                 }
             )
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("failed add address, user not found")
+            expect(res.reason).toEqual("failed add address, address not found")
         })
         test('is_success = false Address Not found', async () => {
             addressValues.returnGetAddressByID = null
@@ -138,7 +138,7 @@ describe('address', () => {
                 }
             )
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("failed add address, address not found")
+            expect(res.reason).toEqual("failed add address, address not found")
         })
     })
     describe('delete address', () => {
@@ -151,7 +151,7 @@ describe('address', () => {
             addressUC = new addressUseCase(mockAddressRepo(addressValues))
             let res = await addressUC.deleteAddress()
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("failed add address, address not found")
+            expect(res.reason).toEqual("failed delete address, address not found")
         })
     })
 })

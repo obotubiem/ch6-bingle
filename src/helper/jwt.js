@@ -18,7 +18,7 @@ function generate_access_token(data) {
             expiresIn: '6h'
         }
     )
-    return {user : user ,token : token}
+    return token
     
 }
 
