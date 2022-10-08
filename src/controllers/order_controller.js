@@ -1,34 +1,38 @@
 const res_data = require("../helper/respons_data");
 module.exports = {
   getOrder: async (req, res, next) => {
-    let userId = req.user.id;
+    let user_id = req.user.id;
     try {
-      const order = await req.orderUC.getOrder(userId);
-      if (order === null) {
-        return res.status(404).json(order.message);
+      let order = await req.orderUC.getOrder(user_id);
+      if (order.is_success !== true) {
+        return res
+        .status(order.status)
+        .json(res_data.failed(order.reason));
       }
-      res.status(200).json(res_data.success(order));
+      res.status(order.status).json(res_data.success(order.data));
     } catch (e) {
       next(e);
     }
   },
 
   createOrder: async (req, res, next) => {
-    let userId = req.user.id
+    let user_id = req.user.id
     let items = req.body.items
-    let order = await req.orderUC.getOrder(userId)
+    let order = await req.orderUC.getOrder(user_id)
 
     try {
-      if (order === null) {
-        let create_res = await req.orderUC.createOrderUser(userId, items);
+      if (order.is_success !== true) {
+        let create_res = await req.orderUC.createOrderUser(user_id, items);
         if (create_res.is_success !== true) {
-          res.status(400).json(create_res.message)
+        return res
+        .status(create_res.status)
+        .json(create_res.reason)
         }
       } else {
         await req.orderUC.addOrderDetails(order.id, items)
       }
-      order = await req.orderUC.getOrder(userId)
-      res.status(200).json(res_data.success(order))
+      order = await req.orderUC.getOrder(user_id)
+      res.status(order.status).json(res_data.success(order.data))
     } catch (e) {
       next(e)
     }

@@ -32,7 +32,7 @@ class OrderRepository {
 
   async updateOrder (order, id){
    return await this.OrderModel.create(order ,{
-    where : {id:id}
+    where : {id:order.id}
    })
   }
 
