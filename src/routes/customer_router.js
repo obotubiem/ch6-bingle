@@ -39,5 +39,6 @@ router.delete('/address/delete/:id',authorized.customer, address_controller.dele
 // Order
 router.get('/order',authorized.customer, order_controller.getOrder)
 router.post('/order/add/',authorized.customer, order_controller.createOrder)
+router.patch('/order/submit/', authorized.customer, order_controller.changeStatuOrder)
 
 module.exports = router

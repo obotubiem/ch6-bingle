@@ -35,6 +35,11 @@ class OrderRepository {
     where : {id:order.id}
    })
   }
+  async getOrderByOrdeID(order_id){
+    return await this.OrderModel.findOne({
+      where : {order_id : order_id}
+    })
+  }
 
 }
 
