@@ -11,6 +11,7 @@ const authorized = require('../middleware/auth')
 
 // user
 router.put('/update-profile/',authorized.customer ,user_controller.editUser)
+router.put('/update-password/',authorized.customer ,user_controller.updatePassword)
 
 
 
