@@ -36,7 +36,7 @@ describe('product', () => {
         productUC = new productUseCase(mockProductRepo(productValues))
         let res = await productUC.getProductByID()
         expect(res.is_success).toBeFalsy()
-        expect(res.message).toEqual('product not found')
+        expect(res.reason).toEqual('product not found')
     })
 
     describe('get all Product', () => {
@@ -51,7 +51,7 @@ describe('product', () => {
         productUC = new productUseCase(mockProductRepo(productValues))
         let res = await productUC.getProducts()
         expect(res.is_success).toBeFalsy()
-        expect(res.message).toEqual('product not found')
+        expect(res.reason).toEqual('product not found')
     })
 
     describe('create Product', () => {
@@ -83,7 +83,7 @@ describe('product', () => {
                 image: null
             })
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("something went wrong")
+            expect(res.reason).toEqual("something went wrong")
         })
         test('is_success = false', async () => {
             categoryValues.returnGetCategoryByID = null
@@ -101,7 +101,7 @@ describe('product', () => {
                 image: null
             })
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("failed add product, category not found")
+            expect(res.reason).toEqual("failed add product, category not found")
         })
     })
 
@@ -117,7 +117,7 @@ describe('product', () => {
                 mockCategoryRepo(categoryValues))
             let res = await productUC.deleteProduct("123e4567-e89b-12d3-a456-111114174123")
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("something went wrong")
+            expect(res.reason).toEqual("failed add product, category not found")
         })
         test('is_success = false product not found', async () => {
             productValues.returnGetProductByID = null
@@ -126,7 +126,7 @@ describe('product', () => {
                 mockCategoryRepo(categoryValues))
             let res = await productUC.deleteProduct("123e4567-e89b-12d3-a456-111114174123")
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("failed delete product, product not found")
+            expect(res.reason).toEqual("failed delete product, category not found")
         })
     })
 
@@ -147,7 +147,7 @@ describe('product', () => {
                 category_id: 1,
             })
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("something went wrong")
+            expect(res.reason).toEqual("failed add product, category not found")
         })
         test('is_success = false', async () => {
             categoryValues.returnGetCategoryByID = null
@@ -159,7 +159,7 @@ describe('product', () => {
                 category_id: 1,
             })
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("failed add product, category not found")
+            expect(res.reason).toEqual("failed add product, category not found")
         })
     })
 })

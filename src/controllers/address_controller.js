@@ -6,17 +6,18 @@ module.exports = {
     try {
       let user_id = req.user.id
       let res_address = await req.addressUC.getAddressByUserID(user_id);
-      if (res_address == null) {
+      if (res_address.is_success !== true) {
+        
         return res
-          .status(404)
-          .json(res_data.failed(res_address.message, null));
+          .status(res_address.status)
+          .json(res_data.failed(res_address.reason, null));
       }
-      res.status(200).json(res_data.success(res_address.address));
+      res.status(res_address.status).json(res_data.success(res_address.data));
     } catch (e) {
       next(e);
     }
   },
-  addAddress: async (req, res, next) => {
+  createAddress: async (req, res, next) => {
     try {
       let address = {
         province :req.body.province,
@@ -27,19 +28,19 @@ module.exports = {
       } 
 
       let create_res = await req.addressUC.addNewAddress(address);
-      if (create_res.is_success != true) {
+      if (create_res.is_success !== true) {
         return res
-          .status(404)
-          .json(res_data.failed(create_res.message));
+          .status(create_res.status)
+          .json(res_data.failed(create_res.reason));
       }
-      res.json(res_data.success(address));
+      res.json(res_data.success(create_res.data));
     } catch (e) {
       next(e);
     }
   },
 
-  editAddres: async (req, res, next) => {
-    let id = req.params.id;
+  updatetAddress: async (req, res, next) => {
+    let id = req.user.id;
     try {
       let address = {
         province :req.body.province,
@@ -50,12 +51,12 @@ module.exports = {
       } 
 
       let res_update = await req.addressUC.updateAddress(address, id);
-      if (res_update.is_success != true) {
+      if (res_update.is_success !== true) {
         return res
-          .status(500)
-          .json(res_data.failed(res_update.message));
+          .status(res_update.status)
+          .json(res_data.failed(res_update.reason));
       }
-      res.status(200).json(res_data.success());
+      res.status(res_update.status).json(res_data.success());
     } catch (e) {
       next(e);
     }
@@ -66,8 +67,8 @@ module.exports = {
       let delete_res = await req.addressUC.deleteAddress(id);
       if (delete_res.is_success !== true) {
         return res
-          .status(400)
-          .json(res_data.failed(delete_res.message));
+          .status(delete_res.status)
+          .json(res_data.failed(delete_res.reason));
       }
       res.json(res_data.success());
     } catch (e) {

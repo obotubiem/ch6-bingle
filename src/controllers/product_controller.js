@@ -4,14 +4,14 @@ const { v4: uuidv4 } = require("uuid");
 module.exports = {
   getAllProduct: async (req, res, next) => {
     try {
-      let res_product = await req.itemUC.getProducts();
+      let res_product = await req.productUC.getProducts();
       if (res_product.is_success !== true) {
         return res
-          .status(404)
-          .json(res_data.failed(res_product.message, null));
+          .status(res_product.status)
+          .json(res_data.failed(res_product.reason, null));
       }
-      res.status(200).
-        json(res_data.success(res_product.products));
+      res.status(res_product.status).
+        json(res_data.success(res_product.data));
     } catch (e) {
       next(e);
     }
@@ -19,36 +19,36 @@ module.exports = {
   getOneProduct: async (req, res, next) => {
     let id = req.params.id;
     try {
-      let res_product = await req.itemUC.getProductByID(id);
-      if (res_product.is_success != true) {
+      let res_product = await req.productUC.getProductByID(id);
+      if (res_product.is_success !== true) {
         return res
-          .status(404)
-          .json(res_data.failed(res_product.message, null));
+          .status(res_product.status)
+          .json(res_data.failed(res_product.reason, null));
       }
-      res.status(200).
-        json(res_data.success(res_product.product));
+      res.status(res_product.status).
+        json(res_data.success(res_product.data));
     } catch (e) {
       next(e);
     }
   },
   addProduct: async (req, res, next) => {
-    try {
-      let product = {
-        id: uuidv4(),
-        name: req.body.name,
-        price: req.body.price,
-        stock: req.body.stock,
-        sold: req.body.sold,
-        description: req.body.description,
-        category_id: req.body.category_id,
-      };
 
-      let res_product = await req.itemUC.addNewProduct(product);
+    let product = {
+      id: uuidv4(),
+      name: req.body.name,
+      price: req.body.price,
+      stock: req.body.stock,
+      sold: 0,
+      description: req.body.description,
+      category_id: req.body.category_id,
+    };
+    try {
+      let res_product = await req.productUC.addNewProduct(product);
       if (res_product.is_success != true) {
-        res.status(400).json(res_data.failed(res_product.message));
+        res.status(res_product.status).json(res_data.failed(res_product.reason));
       }
 
-      res.json(res_data.success(product));
+      res.status(res_product.status).json(res_data.success(res_product.data));
     } catch (e) {
       next(e);
     }
@@ -60,16 +60,15 @@ module.exports = {
         name: req.body.name,
         price: req.body.price,
         stock: req.body.stock,
-        sold: req.body.sold,
         description: req.body.description,
         category_id: req.body.category_id,
       };
 
-      let update_res = await req.itemUC.updateProduct(product, id);
+      let update_res = await req.productUC.updateProduct(product, id);
       if (update_res.is_success !== true) {
-        return res.status(400).json(res_data.failed(update_res.message));
+        return res.status(update_res.status).json(res_data.failed(update_res.reason));
       }
-      res.json(res_data.success(product));
+      res.status(update_res.status).json(res_data.success());
     } catch (e) {
       next(e);
     }
@@ -78,11 +77,11 @@ module.exports = {
     try {
       let id = req.params.id;
 
-      let delete_res = await req.itemUC.deleteProduct(id);
+      let delete_res = await req.productUC.deleteProduct(id);
       if (delete_res.is_success !== true) {
-        return res.status(400).json(res_data.failed(delete_res.message));
+        return res.status(delete_res.status).json(res_data.failed(delete_res.reason));
       }
-      res.json(res_data.success());
+      res.status(delete_res.status).json(res_data.success());
     } catch (e) {
       next(e);
     }

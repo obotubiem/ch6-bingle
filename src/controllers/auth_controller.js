@@ -6,7 +6,7 @@ const _ = require("lodash");
 module.exports = {
   register: async (req, res, next) => {
     try {
-      let user = {
+      let user_data = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         username: req.body.username,
@@ -21,19 +21,23 @@ module.exports = {
           .status(400)
           .json(res_data.failed("password and confrimPassword not", null));
       }
-
-      let res_user = await req.userUC.register(user);
-      if (res_user.is_success != true) {
-        return res.status(400).json(res_data.failed(res_user.message));
-      }
       let avatar = null;
       if (req.file != undefined) {
         avatar = await url.uploadCloudinaryAvatar(req.file.path);
       } else {
         avatar = process.env.PROFILE_URL;
       }
-      user.avatar = avatar;
+      user_data.avatar = avatar;
 
+      let res_user = await req.authUC.register(user_data);
+      if (res_user.is_success != true) {
+        return res
+          .status(res_user.status)
+          .json(res_data.failed(res_user.reason));
+      }
+
+      const user = _.omit(res_user.data.dataValues, ['password'])
+      const token = generateToken(user)
       res.json(
         res_data.success({
           name: user.name,

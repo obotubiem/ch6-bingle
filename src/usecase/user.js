@@ -1,113 +1,106 @@
+const bcrypt = require("bcrypt")
 class User {
   constructor(userRepository) {
     this.userRepository = userRepository;
   }
 
   async getAllUser() {
-    let is_success = true
-    let message = "Success"
-    let status = 200
-
-    let user = await this.userRepository.getAllUser()
-
+    let result = {
+      is_success: false,
+      reason: "failed",
+      status: 404,
+      data: null
+    }
+    let user = await this.userRepository.getAllUser();
     if (user == null) {
-      status = 404
-      message = "User empty"
-      is_success = false
+      result.reason = "list empty"
+      return result
     }
-
-    return {
-      is_success,
-      message,
-      user,
-      status
-    }
+    result.is_success = true
+    result.status = 200
+    result.data = user
+    return result
   }
 
   async getUserByID(id) {
-    let is_success = true
-    let message = "Success"
-    let status = 200
-
+    let result = {
+      is_success: false,
+      reason: "failed",
+      status: 404,
+      data: null
+    }
     let user = await this.userRepository.getUserByID(id);
     if (user == null) {
-      message = "User not found"
-      is_success = false
-      status = 404
+      result.reason = "user not found"
+      return result
     }
-
-    return {
-      is_success,
-      message,
-      user,
-      status
-    }
+    result.is_success = true
+    result.status = 200
+    result.data = user
+    return result
   }
 
   async updateUser(user_data, id) {
-    let is_success = false
+    let result = {
+      is_success: false,
+      reason: "failed",
+      status: 404,
+      data: null
+    }
     let user = null
     user = await this.userRepository.getUserByUsername(user_data.username);
     if (user != null) {
-      return { message: "username already exist" };
+      result.reason = "username already exist"
+      return result
     }
     user = await this.userRepository.getUserByEmail(user_data.email);
     if (user != null) {
-      return { message: "email already exist" };
+      result.reason = "email already exist"
+      return result
     }
     user = await this.userRepository.getUserByPhone(user_data.phone);
     if (user != null) {
-      return { message: "phone already exist" };
+      result.reason = "phone already exist"
+      return result
     }
     user = await this.userRepository.updateUser(user_data, id);
     if (user == null) {
-      return { message: "internal server error" }
+      result.reason = "internal server error"
+      result.status = 500
+      return result
     }
-    is_success = true
-    return {
-      is_success: is_success,
-      user: user
-    }
+    result.is_success = true
+    result.status = 200
+    result.data = user
+    return result
   }
-
-  async register(user_data) {
-    let is_success = false;
-    let user = null;
-    user = await this.userRepository.getUserByUsername(user_data.username);
-    if (user != null) {
-      return { message: "username already exist" };
+  async updatePassword(user_data, id){
+    let result = {
+      is_success : false,
+      reason : "",
+      status : 400,
     }
-    user = await this.userRepository.getUserByEmail(user_data.email);
-    if (user != null) {
-      return { message: "email already exist" };
+    user_data.oldPassword = bcrypt.hashSync(user_data.oldPassword, 10);
+    
+   let user = await this.userRepository.getUserByID(id)
+    if(user === null){
+      result.reason = "user not found"
+      result.status = 404
+      return result
     }
-    user = await this.userRepository.getUserByPhone(user_data.phone);
-    if (user != null) {
-      return { message: "phone already exist" };
+    user.password = bcrypt.hashSync(user_data.password, 10);
+    console.log(user.password)
+    if(bcrypt.compareSync(user.password, user_data.oldPassword)){
+      result.reason = "confrim password incorect"
+      return result
     }
-    user = await this.userRepository.registerUser(user_data);
-    if (user == null) {
-      return { message: "somthing went wrong" };
-    }
-    is_success = true;
-    return {
-      is_success: is_success,
-      user: user,
-    };
-  }
-
-  async login(username, password) {
-    let is_success = false
-    let user = await this.userRepository.loginUser(username, password)
-    if (user == null) {
-      return { message: "incorect username or password" };
-    }
-    is_success = true
-    return {
-      is_success: is_success,
-      user: user,
-    }
+    await this.userRepository.updatePassword(user_data, id)
+    result.is_success = true,
+    result.status = 200
+    return result
+    
   }
 }
+
 
 module.exports = User;

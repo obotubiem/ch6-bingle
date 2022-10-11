@@ -5,8 +5,11 @@ app.use('/public', express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+const AuthRepository = require("./src/repository/auth")
+const AuthUseCase = require("./src/usecase/auth")
+
 const ProductRepository = require("./src/repository/product")
-const ItemUseCase = require("./src/usecase/product")
+const ProductUseCase = require("./src/usecase/product")
 
 const ProductImageRepository = require("./src/repository/image_product")
 const ProductImageUseCase = require("./src/usecase/product_image")
@@ -28,13 +31,18 @@ const adminRouter = require("./src/routes/admin_router")
 const customerRouter = require("./src/routes/customer_router")
 const authRouter = require("./src/routes/auth_router")
 
+const authUC = new AuthUseCase(
+    new AuthRepository(),
+    new UserRepository()
+)
+
 const userUC = new UserUseCase(new UserRepository())
 const addressUC = new AddressUseCase(
     new AddressRepository(),
     new UserRepository()
 )
 const categoryUC = new CategoryUseCase(new CategoryRepository())
-const itemUC = new ItemUseCase(
+const productUC = new ProductUseCase(
     new ProductRepository(),
     new CategoryRepository()
 )
@@ -51,7 +59,8 @@ const orderUC = new OrderUseCase(
 )
 
 app.use((req, res, next) => {
-    req.itemUC = itemUC
+    req.authUC = authUC
+    req.productUC = productUC
     req.productImageUC = productImageUC
     req.categoryUC = categoryUC
     req.userUC = userUC

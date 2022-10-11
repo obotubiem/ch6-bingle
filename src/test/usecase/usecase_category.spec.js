@@ -28,7 +28,7 @@ describe('category', () => {
             categoryUC = new categoryUseCase(mockCategoryRepo(categoryValues))
             let res = await categoryUC.getCategoryByID(1)
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual('category not found')
+            expect(res.reason).toEqual('category not found')
         })
     })
     describe('get all category', () => {
@@ -42,7 +42,7 @@ describe('category', () => {
             categoryUC = new categoryUseCase(mockCategoryRepo(categoryValues))
             let res = await categoryUC.getCategory()
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual('category not found')
+            expect(res.reason).toEqual('category not found')
         })
     })
     describe('get product BY category', () => {
@@ -56,7 +56,7 @@ describe('category', () => {
             categoryUC = new categoryUseCase(mockCategoryRepo(categoryValues))
             let res = await categoryUC.getProductByCategoryID(1)
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("product not found")
+            expect(res.reason).toEqual("product not found")
         })
     })
 
@@ -77,7 +77,7 @@ describe('category', () => {
                 name: "Topi"
             })
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("somethig went error")
+            expect(res.reason).toEqual("somethig went error")
         })
     })
     describe('update category', () => {
@@ -91,7 +91,7 @@ describe('category', () => {
             let res = await categoryUC.updateCategory(1, { name: "kemeja" })
 
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("category not found")
+            expect(res.reason).toEqual("category not found")
         })
         test('is_success == fales server error', async () => {
             categoryValues.returnUpdateCategory = null
@@ -99,7 +99,7 @@ describe('category', () => {
             let res = await categoryUC.updateCategory(1, { name: "kemeja" })
 
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("somethig went error")
+            expect(res.reason).toEqual("internal server error")
         })
     })
     describe('delete category', () => {
@@ -112,14 +112,14 @@ describe('category', () => {
             categoryUC = new categoryUseCase(mockCategoryRepo(categoryValues))
             let res = await categoryUC.deleteCategory(1)
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("somethig went error")
+            expect(res.reason).toEqual("internal server error")
         })
         test('is_success = false category not found', async () => {
             categoryValues.returnGetCategoryByID = null
             categoryUC = new categoryUseCase(mockCategoryRepo(categoryValues))
             let res = await categoryUC.deleteCategory(1)
             expect(res.is_success).toBeFalsy()
-            expect(res.message).toEqual("category not found")
+            expect(res.reason).toEqual("category not found")
         })
     })
 

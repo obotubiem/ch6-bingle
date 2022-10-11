@@ -3,21 +3,31 @@ class Category {
       this.categoryRepository = categoryRepository
    }
    async getCategoryByID(id) {
-      let is_success = false;
+      let result = {
+         is_success: false,
+         reason: "failed",
+         status: 404,
+         data: null
+      }
       let category = await this.categoryRepository.getCategoryByID(id);
       if (category == null) {
+<<<<<<< HEAD
          return {
             message: "category not found",
             category: category
          };
+=======
+         result.reason = "category not found"
+         return result
+>>>>>>> f4009be4b06901aae27efaa769efb253f24e6882
       }
-      is_success = true;
-      return {
-         is_success: is_success,
-         category: category,
-      };
+      result.is_success = true;
+      result.status = 200
+      result.data = category
+      return result
    }
    async getCategory(filters) {
+<<<<<<< HEAD
       let is_success = false
       let category = null
 
@@ -38,12 +48,51 @@ class Category {
       return {
          is_success: is_success,
          category: category
+=======
+      let result = {
+         is_success: false,
+         reason: "failed",
+         status: 404,
+         data: null
       }
+     let category = await this.categoryRepository.getCategory(filters)
+      if (category == null) {
+         result.reason = "category not found"
+         return result
+      }
+      result.is_success = true;
+      result.status = 200
+      result.data = category
+      return result
+   }
+   async getProductByCategoryID(id) {
+      let result = {
+         is_success: false,
+         reason: "failed",
+         status: 404,
+         data: null
+       }
+      let category = await this.categoryRepository.getProductByCategoryID(id)
+      if (category == null) {
+         result.reason = "product not found"
+         return result
+>>>>>>> f4009be4b06901aae27efaa769efb253f24e6882
+      }
+      result.is_success = true;
+      result.status = 200
+      result.data = category
+      return result
    }
    async createCategory(data_category) {
-      let is_success = false;
+      let result = {
+         is_success: false,
+         reason: "failed",
+         status: 404,
+         data: null
+       }
       let category = await this.categoryRepository.createCategory(data_category);
       if (category == null) {
+<<<<<<< HEAD
          return {
             message: "somethig went error",
             category: category
@@ -53,38 +102,62 @@ class Category {
       return {
          is_success: is_success,
          category: category
+=======
+         result.reason = "somethig went error"
+         result.status = 500
+         return result
+>>>>>>> f4009be4b06901aae27efaa769efb253f24e6882
       }
+      result.is_success = true;
+      result.status = 200
+      result.data = category
+      return result
    }
    async updateCategory(category_data, id) {
-      let is_success = false
-      let category = null
-      let categoryExist = await this.categoryRepository.getCategoryByID(id)
-      if (categoryExist == null) {
-         return { message: "category not found" };
+      let result = {
+         is_success: false,
+         reason: "failed",
+         status: 404,
+         data: null
+       }
+      let existCategory = await this.categoryRepository.getCategoryByID(id)
+      if (existCategory == null) {
+         result.reason = "category not found"
+         return result
       }
-      category = await this.categoryRepository.updateCategory(category_data, id)
+      let category = await this.categoryRepository.updateCategory(category_data, id)
       if (category == null) {
-         return { message: "somethig went error" };
+         result.reason = "internal server error"
+         result.status = 500
+         return result 
       }
-      is_success = true
-      return {
-         is_success: is_success,
-         category: category
-      }
+      result.is_success = true;
+      result.status = 200
+      result.data = category
+      return result
    }
    async deleteCategory(id) {
-      let is_success = false
-      let category = null
-      let categoryExist = await this.categoryRepository.getCategoryByID(id)
-      if (categoryExist == null) {
-         return { message: "category not found" };
+      let result = {
+         is_success: false,
+         reason: "failed",
+         status: 404,
+         data: null
+       }
+      let existCategory = await this.categoryRepository.getCategoryByID(id)
+      if (existCategory == null) {
+         result.reason = "category not found"
+         return result
       }
-      category = await this.categoryRepository.deleteCategory(id)
+      let category = await this.categoryRepository.deleteCategory(id)
       if (category == null) {
-         return { message: "somethig went error" };
+         result.reason = "internal server error"
+         result.status = 500
+         return result 
       }
-      is_success = true
-      return { is_success: is_success }
+      result.is_success = true;
+      result.status = 200
+      result.data = category
+      return result
    }
 }
 

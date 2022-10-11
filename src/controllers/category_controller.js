@@ -6,10 +6,10 @@ module.exports = {
       let res_category = await req.categoryUC.getCategory();
       if (res_category.is_success !== true) {
         return res
-          .status(404)
-          .json(res_data.failed(res_category.message, null));
+          .status(res_category.status)
+          .json(res_data.failed(res_category.reason, null));
       }
-      res.json(res_data.success(res_category.category));
+      res.status(res_category.status).json(res_data.success(res_category.data));
     } catch (e) {
       next(e);
     }
@@ -20,10 +20,10 @@ module.exports = {
       let res_category = await req.categoryUC.getCategoryByID(id);
       if (res_category.is_success !== true) {
         return res
-          .status(404)
-          .json(res_data.failed(res_category.message, null));
+          .status(res_category.status)
+          .json(res_data.failed(res_category.reason, null));
       }
-      res.status(200).json(res_data.success(res_category.category));
+      res.status(res_category.status).json(res_data.success(res_category.data));
     } catch (e) {
       next(e);
     }
@@ -34,10 +34,10 @@ module.exports = {
       let res_category = await req.categoryUC.getProductByCategoryID(id);
       if (res_category.is_success !== true) {
         return res
-          .status(404)
-          .json(res_data.failed(res_category.message, null));
+          .status(res_category.status)
+          .json(res_data.failed(res_category.reason, null));
       }
-      res.status(200).json(res_data.success(res_category.category));
+      res.status(res_category.status).json(res_data.success(res_category.data));
     } catch (e) {
       next(e);
     }
@@ -48,10 +48,10 @@ module.exports = {
       let create_res = await req.categoryUC.createCategory(category);
       if (create_res.is_success !== true) {
         return res
-          .status(404)
-          .json(res_data.failed(create_res.message));
+          .status(create_res.status)
+          .json(res_data.failed(create_res.reason));
       }
-      return res.status(200).json(res_data.success(category));
+      return res.status(create_res.status).json(res_data.success(create_res.data));
     } catch (e) {
       next(e);
     }
@@ -65,10 +65,10 @@ module.exports = {
       let update_res = await req.categoryUC.updateCategory(category, id);
       if (update_res.is_success !== true) {
         return res
-          .status(400)
-          .json(res_data.failed(update_res.message));
+          .status(update_res.status)
+          .json(res_data.failed(update_res.reason));
       }
-      res.json(res_data.success(category));
+      res.status(update_res.status).json(res_data.success());
     } catch (e) {
       next(e);
     }

@@ -3,12 +3,16 @@ const jwt = require('jsonwebtoken')
 function generate_access_token(data) {
     let user = {
         id: data.id,
+        firsName: data.firsName,
+        lastName: data.lastName,
         username: data.username,
         email: data.email,
+        phone: data.phone,
+        avatar: data.avatar,
         role_id: data.role_id
     }
 
-    const accessToken = jwt.sign(
+    const token = jwt.sign(
         user,
         process.env.JWT_KEY_SECRET,
         {
@@ -16,7 +20,7 @@ function generate_access_token(data) {
         }
     )
 
-    return accessToken
+    return token
 }
 
 module.exports = generate_access_token
