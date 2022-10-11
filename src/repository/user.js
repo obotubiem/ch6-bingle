@@ -42,8 +42,6 @@ class UserRepository {
     });
   }
 
-<<<<<<< HEAD
-=======
   async getUserByID(id) {
     return await this.UserModel.findOne({
       // attributes: { exclude: ["password"] },
@@ -51,7 +49,6 @@ class UserRepository {
     });
   }
 
->>>>>>> f4009be4b06901aae27efaa769efb253f24e6882
   async updateUser(user, id) {
     return await this.UserModel.update(user, {
       where: { id: id },
@@ -75,7 +72,7 @@ class UserRepository {
     }
     return user;
   }
-  
+
 
   async updatePassword(user, id) {
     return await this.UserModel.update(user, {

@@ -6,33 +6,28 @@ module.exports = {
     try {
       let res_product = await req.productUC.getProducts();
       if (res_product.is_success !== true) {
-        return res
-          .status(res_product.status)
-          .json(res_data.failed(res_product.reason, null));
+        return res.status(res_product.status).json(res_data.failed(res_product.reason, null));
       }
-      res.status(res_product.status).
-        json(res_data.success(res_product.data));
+      res.status(res_product.status).json(res_data.success(res_product.data));
     } catch (e) {
       next(e);
     }
   },
+
   getOneProduct: async (req, res, next) => {
     let id = req.params.id;
     try {
       let res_product = await req.productUC.getProductByID(id);
       if (res_product.is_success !== true) {
-        return res
-          .status(res_product.status)
-          .json(res_data.failed(res_product.reason, null));
+        return res.status(res_product.status).json(res_data.failed(res_product.reason, null));
       }
-      res.status(res_product.status).
-        json(res_data.success(res_product.data));
+      res.status(res_product.status).json(res_data.success(res_product.data));
     } catch (e) {
       next(e);
     }
   },
-  addProduct: async (req, res, next) => {
 
+  addProduct: async (req, res, next) => {
     let product = {
       id: uuidv4(),
       name: req.body.name,
@@ -44,7 +39,7 @@ module.exports = {
     };
     try {
       let res_product = await req.productUC.addNewProduct(product);
-      if (res_product.is_success != true) {
+      if (!res_product.is_success) {
         res.status(res_product.status).json(res_data.failed(res_product.reason));
       }
 
@@ -53,6 +48,7 @@ module.exports = {
       next(e);
     }
   },
+
   editProduct: async (req, res, next) => {
     try {
       let id = req.params.id;
@@ -65,7 +61,7 @@ module.exports = {
       };
 
       let update_res = await req.productUC.updateProduct(product, id);
-      if (update_res.is_success !== true) {
+      if (!update_res.is_success) {
         return res.status(update_res.status).json(res_data.failed(update_res.reason));
       }
       res.status(update_res.status).json(res_data.success());
@@ -73,12 +69,13 @@ module.exports = {
       next(e);
     }
   },
+
   deleteProduct: async (req, res, next) => {
     try {
       let id = req.params.id;
 
       let delete_res = await req.productUC.deleteProduct(id);
-      if (delete_res.is_success !== true) {
+      if (!delete_res.is_success) {
         return res.status(delete_res.status).json(res_data.failed(delete_res.reason));
       }
       res.status(delete_res.status).json(res_data.success());

@@ -55,6 +55,7 @@ module.exports = {
       next(e);
     }
   },
+
   updatePassword: async (req, res, next) => {
     let id = req.user.id
     let user = {

@@ -9,100 +9,89 @@ class Order {
   async getPendingOrderByUserID(user_id) {
     let result = {
       is_success: false,
-      reason: '',
+      message: "",
       status: 404,
-      data: null
-    }
-    let order = null
-    order = await this.orderRepository.getPendingOrderByUserID(user_id)
+      data: null,
+    };
+
+    let order = await this.orderRepository.getPendingOrderByUserID(user_id);
     if (order === null) {
-      result.result = "customer has not ordered"
-      return result
+      result.message = "customer has not ordered";
+      return result;
     }
-    result.is_success = true
-    result.status = 200
-    result.data = order
-    return result
+
+    result.is_success = true;
+    result.status = 200;
+    result.data = order;
+    return result;
   }
 
-  async createOrder (user_id, items){
+  async createOrder(user_id, items) {
     let result = {
       is_success: false,
-      reason: '',
+      reason: "",
       status: 404,
-      data: null
-    }
+      data: null,
+    };
+
     let order_data = {
       user_id: user_id,
-      status : order_constants.ORDER_PENDING
+      status: order_constants.ORDER_PENDING,
+    };
+
+    let order = await this.orderRepository.getPendingOrderByUserID(user_id);
+    if (order === null) {
+      order = await this.orderRepository.createOrder(order_data);
     }
-    let order = null
-   order = await this.orderRepository.getPendingOrderByUserID(user_id)
-    if(order === null){
-      
-      order = await this.orderRepository.createOrder(order_data)
-     
-    }
-     await this.addOrderDetails(order.id, items)
-    result.is_success =true
-    result.data = order
-    result.status = 200
-    return result
+
+    await this.addOrderDetails(order.id, items);
+
+    let newOrder = await this.orderRepository.getPendingOrderByUserID(user_id);
+
+    result.is_success = true;
+    result.data = newOrder;
+    result.status = 200;
+
+    return result;
   }
 
-  async addOrderDetails (order_id, items){
-    for(let i=0 ;i< items.length; i++){
-      if(items[i].qty <= 0){
-        continue
+  async addOrderDetails(order_id, items) {
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].qty <= 0) {
+        continue;
       }
-      let product = null
-      product = await this.productRepository.getProductByID(items[i].id)
-      if(product !== null){
+
+      let product = await this.productRepository.getProductByID(items[i].id);
+      if (product !== null) {
+        let qty = items[i].qty;
+        let price = product.price;
+        let total = price * qty;
         let detail = {
-          order_id:order_id,
-          product_id : product.id,
-          qty: items[i].qty
-        }
-        await this.orderDetailRepository.createOrderDetails(detail)
-      }
-    }
-  }
+          order_id: order_id,
+          product_id: product.id,
+          qty: qty,
+          price,
+          total,
+        };
 
+        let existDetail = await this.orderDetailRepository.getByOrderAndProduct(order_id, product.id);
 
-<<<<<<< HEAD
-        if (product != null) {
-          let detail = {
-            order_id,
-            product_id: product.id,
-            qty,
+        if (existDetail !== null) {
+          let newQty = existDetail.qty + qty;
+          let newTotal = price * newQty;
+
+          existDetail.update({
+            qty: newQty,
             price,
-            total,
-          };
+            total: newTotal,
+          });
+        } else {
           await this.orderDetailRepository.createOrderDetails(detail);
         }
       }
     }
   }
 
-  async validateStock(items) {
-    let is_success = true
-    let message = ''
-    for (let i = 0; i < items.length; i++) {
-      let product = await this.productRepository.getProductByID(items[i].id)
-      let qty = items[i].qty
-      let stock = product.stock
-
-      if (qty > stock) {
-        is_success = false
-        return { message: `stock ${product.name} kurang dari ${qty}` }
-      }
-    }
-    return {
-      is_success,
-      message 
-    }
-  }
-=======
   // async getOrder(user_id) {
   //   let result = {
   //     is_success: false,
@@ -142,7 +131,6 @@ class Order {
   //     await this.addOrderDetails(order.id, items)
 
   //   }
-
 
   //   result.is_success = true
   //   result.status = 200
@@ -216,6 +204,5 @@ class Order {
   //     stock: newStock, product_id
   //   })
   // }
->>>>>>> f4009be4b06901aae27efaa769efb253f24e6882
 }
 module.exports = Order;
