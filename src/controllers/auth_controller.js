@@ -50,7 +50,7 @@ module.exports = {
       let { username, password } = req.body;
       let res_user = await req.authUC.login(username, password);
       if (res_user.is_success != true) {
-        res.status(res_user.status).json(res_data.failed(res_user.reason));
+      return  res.status(res_user.status).json(res_data.failed(res_user.reason));
       }
       const user = _.omit(res_user.data.dataValues, ['password'])
       const token = generateToken(user)

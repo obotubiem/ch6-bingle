@@ -11,6 +11,7 @@ const authorized = require('../middleware/auth')
 
 // user
 router.put('/update-profile/',authorized.customer ,user_controller.editUser)
+router.put('/update-password/',authorized.customer ,user_controller.updatePassword)
 
 
 
@@ -39,5 +40,6 @@ router.delete('/address/delete/:id',authorized.customer, address_controller.dele
 // Order
 router.get('/order',authorized.customer, order_controller.getOrder)
 router.post('/order/add/',authorized.customer, order_controller.createOrder)
+router.patch('/order/submit/', authorized.customer, order_controller.changeStatuOrder)
 
 module.exports = router

@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt")
 class User {
   constructor(userRepository) {
     this.userRepository = userRepository;
@@ -69,6 +70,32 @@ class User {
     result.status = 200
     result.data = user
     return result
+  }
+  async updatePassword(user_data, id){
+    let result = {
+      is_success : false,
+      reason : "",
+      status : 400,
+    }
+    user_data.oldPassword = bcrypt.hashSync(user_data.oldPassword, 10);
+    
+   let user = await this.userRepository.getUserByID(id)
+    if(user === null){
+      result.reason = "user not found"
+      result.status = 404
+      return result
+    }
+    user.password = bcrypt.hashSync(user_data.password, 10);
+    console.log(user.password)
+    if(bcrypt.compareSync(user.password, user_data.oldPassword)){
+      result.reason = "confrim password incorect"
+      return result
+    }
+    await this.userRepository.updatePassword(user_data, id)
+    result.is_success = true,
+    result.status = 200
+    return result
+    
   }
 }
 

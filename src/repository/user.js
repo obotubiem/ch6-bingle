@@ -37,7 +37,7 @@ class UserRepository {
 
   async getUserByID(id) {
     return await this.UserModel.findOne({
-      attributes: { exclude: ["password"] },
+      // attributes: { exclude: ["password"] },
       where: { id: id },
     });
   }
@@ -64,6 +64,13 @@ class UserRepository {
       return null;
     }
     return user;
+  }
+  
+
+  async updatePassword(user, id) {
+    return await this.UserModel.update(user, {
+      where: { id: id },
+    });
   }
 }
 

@@ -6,10 +6,10 @@ module.exports = {
       let res_user = await req.userUC.getAllUser();
       if (res_user == null) {
         return res
-        .status(404)
-        .json(res_data.failed(res_user.reason, res_user.data));
-      } 
-       res.json(res_data.success(res_user.data));
+          .status(404)
+          .json(res_data.failed(res_user.reason, res_user.data));
+      }
+      res.json(res_data.success(res_user.data));
     } catch (e) {
       next(e);
     }
@@ -20,8 +20,8 @@ module.exports = {
       let res_user = await req.userUC.getUserByID(id);
       if (res_user == null) {
         return res
-        .status(404)
-        .json(res_data.failed(res_user.message, null));
+          .status(404)
+          .json(res_data.failed(res_user.message, null));
       }
       res.status(200).json(res_data.success(res_user.data));
     } catch (e) {
@@ -50,4 +50,31 @@ module.exports = {
       next(e);
     }
   },
+  updatePassword: async (req, res, next) => {
+    let id = req.user.id
+    let user = {
+      oldPassword: req.body.oldPassword,
+      password: null
+    }
+    try {
+
+      if (req.body.newPassword !== req.body.confrimPassword) {
+        return res
+          .status(400)
+          .json(res_data.failed("password and confrimPassword not", null));
+      }
+      user.password = req.body.newPassword
+      let user_res = await req.userUC.updatePassword(user, id)
+      if (user_res.is_success !== true) {
+        return res
+          .status(user_res.status)
+          .json(res_data.failed(user_res.reason))
+      }
+      res.status(user_res.status).json(res_data.success())
+    } catch (e) {
+      next(e)
+    }
+
+  }
+
 };
