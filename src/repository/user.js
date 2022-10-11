@@ -7,9 +7,11 @@ class UserRepository {
     this.UserModel = User;
     this.AddressModel = Address;
   }
+
   async getAllUser() {
     return await this.UserModel.findAll({
       attributes: { exclude: ["password"] },
+      where: { phone: "asd" },
       include: [
         {
           model: this.AddressModel,
@@ -17,6 +19,11 @@ class UserRepository {
       ],
     });
   }
+
+  async getUserByID(id) {
+    return await this.UserModel.findByPk(id, { attributes: { exclude: ["password"] }, })
+  }
+
   async getUserByUsername(username) {
     return await this.UserModel.findOne({
       where: { username: username },
@@ -32,13 +39,6 @@ class UserRepository {
   async getUserByPhone(phone) {
     return await this.UserModel.findOne({
       where: { phone: phone },
-    });
-  }
-
-  async getUserByID(id) {
-    return await this.UserModel.findOne({
-      attributes: { exclude: ["password"] },
-      where: { id: id },
     });
   }
 

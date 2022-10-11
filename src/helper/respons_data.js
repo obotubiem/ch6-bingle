@@ -15,8 +15,8 @@ module.exports = {
   failed: (message, data) => {
     let res_data = {
       status: 'failed',
-      message : message
-    };
+      message: message
+    }
 
     if (typeof data !== 'undefined') {
       res_data.data = data;

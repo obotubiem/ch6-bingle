@@ -98,6 +98,7 @@ class Order {
       }
     }
   }
+
   async validateStock(items) {
     let is_success = true
     let message = ''
@@ -116,6 +117,5 @@ class Order {
       message 
     }
   }
-
 }
 module.exports = Order;

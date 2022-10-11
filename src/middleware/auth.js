@@ -1,5 +1,6 @@
-const jwt = require('jsonwebtoken');
-const res_data = require('../helper/respons_data');
+const jwt = require('jsonwebtoken')
+const res_data = require('../helper/respons_data')
+const _ = require("lodash")
 
 function getToken(authHeader) {
   let splitHeader = authHeader.split(' ');
@@ -13,34 +14,49 @@ function getToken(authHeader) {
 
 const authorized = (authorization, role_id) => {
   try {
-    
-  if (authorization !== undefined && typeof authorization !== 'string') {
-    return null;
-  }
 
-  let token = getToken(authorization);
-  let payload = null;
+    if (authorization !== undefined && typeof authorization !== 'string') {
+      return null;
+    }
 
-  
+    let token = getToken(authorization);
+    let payload = null;
+
     payload = jwt.verify(token, process.env.JWT_KEY_SECRET);
-  
 
-  if (payload.role_id !== role_id) {
-    return null;
-  }
+    if (payload.role_id !== role_id) {
+      return null;
+    }
 
-  const user = {
-    id: payload.id,
-    username: payload.username,
-    email: payload.email,
-  };
+    const user = {
+      id: payload.id,
+      username: payload.username,
+      email: payload.email,
+    }
 
-  return user;
+    return user;
 
   } catch (err) {
     return null;
   }
-};
+}
+
+const basic = (req, res, next) => {
+  try {
+    const { authorization } = req.headers;
+
+    let token = getToken(authorization)
+    let payload = jwt.verify(token, process.env.JWT_KEY_SECRET)
+
+    const user = _.omit(payload, ['token', 'iat', 'exp'])
+
+    req.user = user
+    next()
+
+  } catch (err) {
+    return res.status(401).json(res_data.failed('unauthorized'))
+  }
+}
 
 const admin = (req, res, next) => {
   const { authorization } = req.headers;
@@ -54,7 +70,7 @@ const admin = (req, res, next) => {
   req.user = getAuthorization;
 
   next();
-};
+}
 
 const customer = (req, res, next) => {
   const { authorization } = req.headers;
@@ -68,6 +84,6 @@ const customer = (req, res, next) => {
   req.user = getAuthorization;
 
   next();
-};
+}
 
-module.exports = { customer, admin };
+module.exports = { customer, admin, basic }

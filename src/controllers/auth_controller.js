@@ -1,6 +1,7 @@
 const res_data = require("../helper/respons_data");
 const url = require("../libs/handle_Upload");
 const generateToken = require("../helper/jwt");
+const _ = require("lodash");
 
 module.exports = {
   register: async (req, res, next) => {
@@ -42,29 +43,41 @@ module.exports = {
           avatar: user.avatar,
           token: generateToken(res_user.user.dataValues),
         })
-      );
+      )
     } catch (e) {
       next(e);
     }
   },
+
   login: async (req, res, next) => {
     try {
-      let { username, password } = req.body;
+      let { username, password } = req.body
 
-      let res_user = await req.userUC.login(username, password);
+      let res_user = await req.userUC.login(username, password)
       if (res_user.is_success != true) {
-        res.status(404).json(res_data.failed(res_user.message));
+        res.status(404).json(res_data.failed(res_user.message))
       }
-      res.json({
-        status: 'ok',
-        message: 'success',
-        data: generateToken(res_user.user)
-      });
+
+      const user = _.omit(res_user.user.dataValues, ['password'])
+      const token = generateToken(user)
+
+      res.json(res_data.success({ user, token }))
+
     } catch (e) {
-      next(e);
+      next(e)
     }
   },
+
   user: async (req, res, next) => {
-    res.json(res_data.success(req.user));
+    try {
+      let res_user = await req.userUC.getUserByID(req.user.id)
+      if (!res_user.is_success) {
+        return res.status(404).json(res_data.failed(res_user.message))
+      }
+
+      res.json(res_data.success(res_user.user))
+    } catch (e) {
+      next(e)
+    }
   },
-};
+}

@@ -6,7 +6,7 @@ class Category {
       let is_success = false;
       let category = await this.categoryRepository.getCategoryByID(id);
       if (category == null) {
-         return { 
+         return {
             message: "category not found",
             category: category
          };
@@ -20,19 +20,19 @@ class Category {
    async getCategory(filters) {
       let is_success = false
       let category = null
- 
-       category = await this.categoryRepository.getCategory(filters)
-       if (category == null) {
+
+      category = await this.categoryRepository.getCategory(filters)
+      if (category == null) {
          return { message: "category not found" };
-       }
+      }
       is_success = true
-      return {category , is_success}
+      return { category, is_success }
    }
    async getProductByCategoryID(id) {
-      let is_success = false   
-     let category = await this.categoryRepository.getProductByCategoryID(id)
+      let is_success = false
+      let category = await this.categoryRepository.getProductByCategoryID(id)
       if (category == null) {
-         return {message : "product not found"}
+         return { message: "product not found" }
       }
       is_success = true
       return {
@@ -44,9 +44,10 @@ class Category {
       let is_success = false;
       let category = await this.categoryRepository.createCategory(data_category);
       if (category == null) {
-         return { message: "somethig went error",
-                  category: category                  
-      };
+         return {
+            message: "somethig went error",
+            category: category
+         };
       }
       is_success = true;
       return {

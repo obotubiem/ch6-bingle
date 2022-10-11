@@ -4,29 +4,36 @@ module.exports = {
   getAllUser: async (req, res, next) => {
     try {
       let res_user = await req.userUC.getAllUser();
-      if (res_user == null) {
+      if (!res_user.is_success) {
         return res
-        .status(404)
-        .json(res_data.failed(res_user, null));
-      } else res.json(res_data.success(res_user.user));
+          .status(res_user.status)
+          .json(res_data.failed(res_user.message, null));
+      }
+
+      res.status(200).json(res_data.success(res_user.user));
+
     } catch (e) {
       next(e);
     }
   },
+
   getUserByID: async (req, res, next) => {
     try {
       let id = req.params.id;
       let res_user = await req.userUC.getUserByID(id);
-      if (res_user == null) {
+
+      if (!res_user.is_success) {
         return res
-        .status(404)
-        .json(res_data.failed(res_user.message, null));
+          .status(404)
+          .json(res_data.failed(res_user.message, null));
       }
+
       res.status(200).json(res_data.success(res_user.user));
     } catch (e) {
       next(e);
     }
   },
+
   editUser: async (req, res, next) => {
     try {
       let id = req.user.id
@@ -49,4 +56,4 @@ module.exports = {
       next(e);
     }
   },
-};
+}
